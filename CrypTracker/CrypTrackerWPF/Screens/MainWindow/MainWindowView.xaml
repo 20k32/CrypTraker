@@ -4,10 +4,14 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:cal="http://www.caliburnproject.org"
-             xmlns:locale="clr-namespace:CrypTrackerWPF.Resources"
+             xmlns:locale="clr-namespace:CrypTrackerWPF.Models.LocalizationExtensions"
              mc:Ignorable="d"
              d:DataContext="MainWindowViewModel">
-    <Grid>
-        <Button Content="{x:Static locale:Localization.Greetings}" Width="100" Height="100"/>
-    </Grid>
+    <StackPanel>
+        <Label Content="{locale:LocalizationBinding {x:Static locale:Replicas.CurrencySign}}" 
+               Margin="0, 0, 0, 50"/>
+        <Button cal:Message.Attach="Submit()" 
+                Content="{locale:LocalizationBinding {x:Static locale:Replicas.Greetings}}" 
+                Width="100" Height="100"/>
+    </StackPanel>
 </UserControl>

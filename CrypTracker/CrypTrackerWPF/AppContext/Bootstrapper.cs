@@ -42,10 +42,6 @@ public sealed class Bootstrapper : BootstrapperBase
     
     protected override async void OnStartup(object sender, StartupEventArgs e)
     {
-        var cultures = Localization.Culture;
-        CultureInfo.CurrentUICulture = CultureInfo.GetCultureInfo("uk-UA");
-        var locale = Localization.Greetings;
-        
         await DisplayRootViewForAsync<MainWindowViewModel>(new Dictionary<string, object>()
         {
             { "WindowStartupLocation", WindowStartupLocation.CenterScreen },
