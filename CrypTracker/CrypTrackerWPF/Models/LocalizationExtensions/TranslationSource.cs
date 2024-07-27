@@ -1,8 +1,6 @@
 using System.ComponentModel;
 using System.Globalization;
 using System.Resources;
-using System.Runtime.CompilerServices;
-using System.Text;
 using System.Windows;
 using Localization = CrypTrackerWPF.Resources.Localization;
 
@@ -43,9 +41,8 @@ public sealed class TranslationSource : INotifyPropertyChanged
     public void OnPropertyChanged()
     {
         if (PropertyChanged is null)
-        {
             return;
-        }
+        
         PropertyChanged.Invoke(this, new PropertyChangedEventArgs(string.Empty));
     }
 }

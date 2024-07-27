@@ -1,11 +1,12 @@
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Windows;
 using Caliburn.Micro;
+using CrypTrackerWPF.Screens.CurrencyConverterWindow;
+using CrypTrackerWPF.Screens.DetailedInfoWindow;
 using CrypTrackerWPF.Screens.MainWindow;
-using CrypTrackerWPF.Resources;
-using Localization = CrypTrackerWPF.Resources.Localization;
+using CrypTrackerWPF.Screens.SettingsWindow;
+using CrypTrackerWPF.Screens.ShellWindow;
 
 namespace CrypTrackerWPF.AppContext;
 
@@ -22,7 +23,7 @@ public sealed class Bootstrapper : BootstrapperBase
         _container
             .Instance(_container)
             .Singleton<IWindowManager, WindowManager>()
-            .Singleton<MainWindowViewModel>();
+            .Singleton<ShellWindowViewModel>();
     }
         
     protected override object GetInstance(Type service, string key)
@@ -38,11 +39,12 @@ public sealed class Bootstrapper : BootstrapperBase
     protected override void BuildUp(object instance)
     {
         _container.BuildUp(instance);
+
     }
     
     protected override async void OnStartup(object sender, StartupEventArgs e)
     {
-        await DisplayRootViewForAsync<MainWindowViewModel>(new Dictionary<string, object>()
+        await DisplayRootViewForAsync<ShellWindowViewModel>(new Dictionary<string, object>()
         {
             { "WindowStartupLocation", WindowStartupLocation.CenterScreen },
             { "MinHeight", 800},

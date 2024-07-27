@@ -1,0 +1,36 @@
+<UserControl x:Class="CrypTrackerWPF.Screens.SettingsWindow.SettingsWindowView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:locale="clr-namespace:CrypTrackerWPF.Models.LocalizationExtensions"
+             xmlns:local="clr-namespace:CrypTrackerWPF.Screens.SettingsWindow"
+             mc:Ignorable="d"
+             d:DesignHeight="300" d:DesignWidth="300">
+    <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
+        <TextBlock Text="{locale:LocalizationBinding {x:Static locale:Replicas.ChooseLanguage}}"/>
+        <ListBox ItemsSource="{Binding Localizations}"
+                 SelectedItem="{Binding SelectedLocalization}"
+                 Width="400"
+                 MaxHeight="400"
+                 Margin="0, 10, 0, 10">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Name, Mode=OneTime}"/>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        <StackPanel Orientation="Horizontal">
+            <TextBlock Text="{locale:LocalizationBinding {x:Static locale:Replicas.ChooseTheme}}"/>
+            <RadioButton x:Name="DarkTheme"
+                         GroupName="Theme" 
+                         Content="{locale:LocalizationBinding {x:Static locale:Replicas.DarkTheme}}"
+                         Margin="20, 0, 10, 0"/>
+            <RadioButton x:Name="LightTheme"
+                         GroupName="Theme" 
+                         Content="{locale:LocalizationBinding {x:Static locale:Replicas.LightTheme}}"/>
+        </StackPanel>
+        
+    </StackPanel>
+    
+</UserControl>

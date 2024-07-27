@@ -14,14 +14,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Page Update="Screens\MainWindow\MainWindowView.xaml">
-        <Generator>MSBuild:Compile</Generator>
-        <XamlRuntime>Wpf</XamlRuntime>
-        <SubType>Designer</SubType>
-      </Page>
-    </ItemGroup>
-
-    <ItemGroup>
       <EmbeddedResource Update="Resources\Localization.resx">
         <Generator>PublicResXFileCodeGenerator</Generator>
         <LastGenOutput>Localization.Designer.cs</LastGenOutput>
@@ -34,6 +26,11 @@
         <AutoGen>True</AutoGen>
         <DependentUpon>Localization.resx</DependentUpon>
       </Compile>
+        
+
     </ItemGroup>
+
+
+
 
 </Project>
