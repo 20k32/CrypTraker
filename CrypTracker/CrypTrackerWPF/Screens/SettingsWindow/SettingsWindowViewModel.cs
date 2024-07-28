@@ -5,22 +5,20 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using Caliburn.Micro;
+using CrypTrackerWPF.Models;
+using CrypTrackerWPF.Models.EventMessages;
 using CrypTrackerWPF.Models.ListBoxItemModels;
 using CrypTrackerWPF.Models.LocalizationExtensions;
-using CrypTrackerWPF.Screens.ShellWindow;
-using Localization = CrypTrackerWPF.Resources.Localization;
 
 namespace CrypTrackerWPF.Screens.SettingsWindow;
 
-public sealed class SettingsWindowViewModel : Screen
+public sealed class SettingsWindowViewModel : AffectUiScreen
 {
     private static readonly ResourceDictionary _darkTheme = new ResourceDictionary()
         { Source = new Uri("Resources/Themes/Dark.xaml", UriKind.Relative) };
 
     private static readonly ResourceDictionary _lightTheme = new ResourceDictionary()
         { Source = new Uri("Resources/Themes/Light.xaml", UriKind.Relative) };
-
-    private readonly ShellWindowViewModel _shellWindow;
 
     #region LocalizationListBox
 
@@ -35,24 +33,38 @@ public sealed class SettingsWindowViewModel : Screen
         {
             _selectedLocalization = value;
             NotifyOfPropertyChange();
-            if (TranslationSource.Instance.CurrentCulture != SelectedLocalization.Culture)
-            {
-                ChangeLocalization();
-            }
+            ChangeLocalization().ShouldNotAwaited();
         }
     }
 
     #endregion
 
+    private async Task ChangeLocalization()
+    {
+        if (TranslationSource.Instance.CurrentCulture != SelectedLocalization.Culture)
+        {
+            TranslationSource.Instance.CurrentCulture = SelectedLocalization.Culture;
+            Localizations[1].Name = TranslationSource.Instance[Replicas.UkrCultureDescription];
+            Localizations[0].Name = TranslationSource.Instance[Replicas.EngCultureDescription];
+            Localizations.Refresh();
+
+            await ExecuteInUiContextAsync(async () =>
+            {
+                await _eventAggregator.PublishOnUIThreadAsync(new ChangeNamesMessage());
+            });
+        }
+    }
+    
     public override string DisplayName
     {
         get => TranslationSource.Instance[Replicas.SettingsWindowTitle];
     }
-
-    public SettingsWindowViewModel(ShellWindowViewModel shellWindow)
+    
+    private readonly IEventAggregator _eventAggregator;
+    public SettingsWindowViewModel(IEventAggregator eventAggregator)
     {
-        _shellWindow = shellWindow;
         Localizations = new();
+        _eventAggregator = eventAggregator;
     }
 
     protected override Task OnInitializeAsync(CancellationToken cancellationToken)
@@ -66,16 +78,6 @@ public sealed class SettingsWindowViewModel : Screen
         SelectedLocalization = Localizations.First();
         return Task.CompletedTask;
     }
-
-    public void ChangeLocalization()
-    {
-        TranslationSource.Instance.CurrentCulture = SelectedLocalization.Culture;
-        Localizations[1].Name = TranslationSource.Instance[Replicas.UkrCultureDescription];
-        Localizations[0].Name = TranslationSource.Instance[Replicas.EngCultureDescription];
-        Localizations.Refresh();
-        _shellWindow.NotifyWindowNamesChanged();
-    }
-
 
     #region DarkThemeCommand
     private bool _canDarkTheme;
@@ -93,13 +95,12 @@ public sealed class SettingsWindowViewModel : Screen
     public void DarkTheme()
     {
         App.Current.Resources.Clear();
-        App.Current.Resources.MergedDictionaries.Add(_darkTheme);
+        ExecuteInUiContext(() => App.Current.Resources.MergedDictionaries.Add(_darkTheme));
         CanLightTheme = true;
         CanDarkTheme = false;
     }
     #endregion
     
-
     #region LightThemeCommand
 
     private bool _canLightTheme;
@@ -117,12 +118,10 @@ public sealed class SettingsWindowViewModel : Screen
     public void LightTheme()
     {
         App.Current.Resources.Clear();
-        App.Current.Resources.MergedDictionaries.Add(_lightTheme);
+        ExecuteInUiContext(() => App.Current.Resources.MergedDictionaries.Add(_lightTheme));
         CanLightTheme = false;
         CanDarkTheme = true;
     }
 
     #endregion
-
-    
 }

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Windows;
 using Caliburn.Micro;
+using CrypTrackerWPF.Models.ApiAccessor;
 using CrypTrackerWPF.Screens.CurrencyConverterWindow;
 using CrypTrackerWPF.Screens.DetailedInfoWindow;
 using CrypTrackerWPF.Screens.MainWindow;
@@ -23,6 +24,12 @@ public sealed class Bootstrapper : BootstrapperBase
         _container
             .Instance(_container)
             .Singleton<IWindowManager, WindowManager>()
+            .Singleton<IEventAggregator, EventAggregator>()
+            .AddApiAccessor()
+            .Singleton<MainWindowViewModel>()
+            .Singleton<DetailedInfoWindowViewModel>()
+            .Singleton<CurrencyConvertViewModel>()
+            .Singleton<SettingsWindowViewModel>()
             .Singleton<ShellWindowViewModel>();
     }
         

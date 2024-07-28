@@ -1,4 +1,5 @@
 using Caliburn.Micro;
+using CrypTrackerWPF.Models.EventMessages;
 using CrypTrackerWPF.Models.LocalizationExtensions;
 
 namespace CrypTrackerWPF.Screens.CurrencyConverterWindow;
@@ -9,4 +10,7 @@ public sealed class CurrencyConvertViewModel : Screen
     {
         get => TranslationSource.Instance[Replicas.CurrencyConvertWindowTitle];
     }
+
+    public CurrencyConvertViewModel()
+    { }
 }

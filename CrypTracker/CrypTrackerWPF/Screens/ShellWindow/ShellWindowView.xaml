@@ -9,10 +9,11 @@
         xmlns:locale="clr-namespace:CrypTrackerWPF.Models.LocalizationExtensions"
         Title="{Binding WindowTitle}" 
         Background="{DynamicResource BackgroundWindow}"
-        FontSize="16">
+        FontSize="16"
+        FontStretch="ExtraCondensed"
+        FontWeight="Medium">
     
-    <TabControl Grid.Row="0" 
-                x:Name="Items"
+    <TabControl x:Name="Items"
                 Margin="5">
         <TabControl.ItemTemplate>
             <ItemContainerTemplate>

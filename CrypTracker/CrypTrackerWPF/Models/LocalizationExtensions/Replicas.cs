@@ -18,7 +18,9 @@ public static class Replicas
     public static readonly PropertyPath ChooseTheme;
     public static readonly PropertyPath LightTheme;
     public static readonly PropertyPath DarkTheme;
-    
+    public static readonly PropertyPath EmptyValueError;
+    public static readonly PropertyPath ClientSideError;
+    public static readonly PropertyPath ServerSideError;
     static Replicas()
     {
         Greetings = new(nameof(Localization.Greetings));
@@ -35,5 +37,8 @@ public static class Replicas
         LightTheme = new(nameof(Localization.LightTheme));
         DarkTheme = new(nameof(Localization.DarkTheme));
         ChooseLanguage = new(nameof(Localization.ChooseLang));
+        EmptyValueError = new(nameof(Localization.EmptyValueError));
+        ClientSideError = new(nameof(Localization.ClientSideError));
+        ServerSideError = new(nameof(Localization.ServerSideError));
     }
 }

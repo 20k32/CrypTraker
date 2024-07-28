@@ -1,26 +1,40 @@
-using System.Globalization;
+using System.Collections.Generic;
 using System.Threading.Tasks;
-using System.Windows.Controls;
-using System.Windows.Data;
 using Caliburn.Micro;
+using CrypTrackerWPF.Models.ApiAccessor;
+using CrypTrackerWPF.Models.ListBoxItemModels;
 using CrypTrackerWPF.Models.LocalizationExtensions;
-using CrypTrackerWPF.Screens.ShellWindow;
 
 namespace CrypTrackerWPF.Screens.MainWindow;
 
-public sealed class MainWindowViewModel : Screen
+public sealed class MainWindowViewModel : AffectUiScreen
 {
-    public override string DisplayName 
-    { 
-        get => TranslationSource.Instance[Replicas.MainWindowTitle];
-    }
+    public BindableCollection<CoinItemModel> Items { get; set; }
     
-    public MainWindowViewModel()
+    private readonly IApiAccessor _apiAccessor;
+
+    public override string DisplayName => TranslationSource.Instance[Replicas.MainWindowTitle];
+    
+    public MainWindowViewModel(IApiAccessor apiAccessor)
     {
-        
+        _apiAccessor = apiAccessor;
+        Items = new();
     }
     
-    public void Submit()
+    public async Task Submit()
+    {
+        ApiAccessorResponse<IEnumerable<CoinItemModel>> responce = null!;
+        
+        await ExecuteInUiContextAsync(async () =>
+        {
+            responce = await _apiAccessor.GetAssetsInRange();
+        });
+        
+        ApiAccessorExtensions.ValidateResponce(responce, (result) 
+             => Items.AddRange(result));
+    }
+
+    public void ValidateResponce()
     {
         
     }
