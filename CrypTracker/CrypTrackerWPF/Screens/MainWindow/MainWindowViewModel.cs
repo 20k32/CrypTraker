@@ -1,6 +1,9 @@
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Caliburn.Micro;
+using CrypTrackerWPF.Models;
 using CrypTrackerWPF.Models.ApiAccessor;
 using CrypTrackerWPF.Models.ListBoxItemModels;
 using CrypTrackerWPF.Models.LocalizationExtensions;
@@ -20,8 +23,13 @@ public sealed class MainWindowViewModel : AffectUiScreen
         _apiAccessor = apiAccessor;
         Items = new();
     }
-    
-    public async Task Submit()
+
+    protected override async Task OnInitializeAsync(CancellationToken cancellationToken)
+    {
+        await LoadAssetsAsync();
+    }
+
+    private async Task LoadAssetsAsync()
     {
         ApiAccessorResponse<IEnumerable<CoinItemModel>> responce = null!;
         
@@ -30,12 +38,41 @@ public sealed class MainWindowViewModel : AffectUiScreen
             responce = await _apiAccessor.GetAssetsInRange();
         });
         
-        ApiAccessorExtensions.ValidateResponce(responce, (result) 
-             => Items.AddRange(result));
+        ApiAccessorExtensions.ValidateResponse(responce, (result) 
+            => Items.AddRange(result));
     }
 
-    public void ValidateResponce()
+    #region SelectedCoinIndex
+    
+    private ushort _selectedIndexTop;
+    public ushort SelectedIndexTop
     {
-        
+        get => _selectedIndexTop;
+        set
+        {
+            var newValue = checked ((ushort)((value + 1) * 5));
+            var oldValue = checked ((ushort)((SelectedIndexTop + 1) * 5));
+            
+            if (value > SelectedIndexTop)
+            {
+                _apiAccessor.SetIntervalLength(checked ((ushort)(newValue - oldValue)));
+                _apiAccessor.SetIntervalOffset(oldValue);
+                
+                LoadAssetsAsync().ShouldNotAwaited();
+            }
+            else
+            {
+                var items = Items
+                    .Skip(newValue)
+                    .Take(oldValue)
+                    .ToArray();
+                
+                Items.RemoveRange(items);
+            }
+            
+            _selectedIndexTop = value;
+            NotifyOfPropertyChange();
+        }
     }
+    #endregion
 }

@@ -29,7 +29,7 @@ public class ApiAccessor : IApiAccessor
         {
             DefaultRequestHeaders =
             {
-                { "Accept", "*/*" },
+                { "Accept", "text/json" },
                 { "Accept-Encoding", "deflate" }
             }
         };
@@ -48,11 +48,10 @@ public class ApiAccessor : IApiAccessor
 
     public void SetIntervalOffset(ushort value)
     {
-        if (value > _intervalLength
-            || value >= MAX_ENTRIES_COUNT)
+        if (value >= MAX_ENTRIES_COUNT)
         {
             throw new ArgumentOutOfRangeException(nameof(_intervalOffset), 
-                $"Max value must be less than _intervalLenght and less than {MAX_ENTRIES_COUNT}");
+                $"Max value must be less than less than {MAX_ENTRIES_COUNT}");
         }
 
         _intervalOffset = value;

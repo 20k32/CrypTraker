@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:locale="clr-namespace:CrypTrackerWPF.Models.LocalizationExtensions"
+             xmlns:cal="http://www.caliburnproject.org"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300">
     <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center"
@@ -24,14 +25,13 @@
         <StackPanel Orientation="Horizontal">
             <TextBlock Text="{locale:LocalizationBinding {x:Static locale:Replicas.ChooseTheme}}"/>
             <RadioButton x:Name="DarkTheme"
-                         GroupName="Theme" 
                          Content="{locale:LocalizationBinding {x:Static locale:Replicas.DarkTheme}}"
                          Margin="20, 0, 10, 0"/>
             <RadioButton x:Name="LightTheme"
-                         GroupName="Theme" 
                          Content="{locale:LocalizationBinding {x:Static locale:Replicas.LightTheme}}"/>
         </StackPanel>
-        
+        <TextBlock Text="{locale:LocalizationBinding {x:Static locale:Replicas.DescriptionToPrice}}"
+                   Margin="0, 30, 0, 0"/>
     </StackPanel>
     
 </UserControl>

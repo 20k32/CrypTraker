@@ -5,24 +5,72 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:local="clr-namespace:CrypTrackerWPF.Screens.MainWindow"
              xmlns:locale="clr-namespace:CrypTrackerWPF.Models.LocalizationExtensions"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300">
-    <StackPanel IsEnabled="{Binding IsUiEnabled}">
-        <ListBox ItemsSource="{Binding Items}"
-                 Width="400"
-                 MaxHeight="400"
-                 Margin="0, 10, 0, 10">
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <TextBlock Text="{Binding Name, Mode=OneTime}" 
-                               Margin="0 5"/>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
-        <TextBlock Text="main window view"/>
-        <Button x:Name="Submit" 
-                Content="{locale:LocalizationBinding {x:Static locale:Replicas.Greetings}}"/>
+    <StackPanel Orientation="Vertical"
+                IsEnabled="{Binding IsUiEnabled}">
+        <StackPanel Orientation="Horizontal"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Center"
+                    Margin="0, 10">
+            <TextBox Text="Some search text" Margin="0, 0, 10, 0"
+                     Width="200"/>
+            <Button Content="Reset"/>
+        </StackPanel>
+        <DataGrid ItemsSource="{Binding Items}"
+                  SelectionMode="Single"
+                  IsReadOnly="True"
+                  AutoGenerateColumns="False"
+                  HorizontalContentAlignment="Center"
+                  HorizontalAlignment="Center">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="{locale:LocalizationBinding {x:Static locale:Replicas.ShortName}}" 
+                                    Binding="{Binding Name, Mode=OneTime}"
+                                    Width="SizeToCells"
+                                    MinWidth="150"/>
+                <DataGridTextColumn Header="{locale:LocalizationBinding {x:Static locale:Replicas.Name}}" 
+                                    Binding="{Binding ShortName, Mode=OneTime}"
+                                    Width="SizeToHeader"/>
+                <DataGridTextColumn Header="{locale:LocalizationBinding {x:Static locale:Replicas.Price}}" 
+                                    Binding="{Binding Price, Mode=OneTime,
+                                        Converter={StaticResource CurrencyConverter}}"
+                                    Width="SizeToCells"/>
+            </DataGrid.Columns>
+        </DataGrid>
+        <StackPanel Orientation="Vertical"
+                    Width="300">
+            <StackPanel Orientation="Horizontal" 
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Center"
+                        Margin="10">
+                <TextBlock Text="{locale:LocalizationBinding {x:Static locale:Replicas.DisplayTop}}" Margin="0, 0, 5, 0"/>
+                <ComboBox Width="100" SelectedIndex="{Binding SelectedIndexTop}">
+                    <ComboBoxItem>5</ComboBoxItem>
+                    <ComboBoxItem>10</ComboBoxItem>
+                    <ComboBoxItem>15</ComboBoxItem>
+                    <ComboBoxItem>20</ComboBoxItem>
+                </ComboBox>
+            </StackPanel>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Button Grid.Column="0"  
+                        Content="{locale:LocalizationBinding {x:Static locale:Replicas.PreviousPage}}"
+                        MinWidth="120"/>
+                <Button Grid.Column="2"  
+                        Content="{locale:LocalizationBinding {x:Static locale:Replicas.NextPage}}"
+                        MinWidth="120"/>
+            </Grid>
+        </StackPanel>
+        <!--<TextBlock>
+            <Hyperlink NavigateUri="http://www.google.com" RequestNavigate="Hyperlink_RequestNavigate">
+                Go to Google
+            </Hyperlink>
+        </TextBlock>-->
     </StackPanel>
+    
 </UserControl>

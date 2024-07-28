@@ -21,6 +21,13 @@ public static class Replicas
     public static readonly PropertyPath EmptyValueError;
     public static readonly PropertyPath ClientSideError;
     public static readonly PropertyPath ServerSideError;
+    public static readonly PropertyPath Name;
+    public static readonly PropertyPath ShortName;
+    public static readonly PropertyPath Price;
+    public static readonly PropertyPath DescriptionToPrice;
+    public static readonly PropertyPath DisplayTop;
+    public static readonly PropertyPath NextPage;
+    public static readonly PropertyPath PreviousPage;
     static Replicas()
     {
         Greetings = new(nameof(Localization.Greetings));
@@ -40,5 +47,12 @@ public static class Replicas
         EmptyValueError = new(nameof(Localization.EmptyValueError));
         ClientSideError = new(nameof(Localization.ClientSideError));
         ServerSideError = new(nameof(Localization.ServerSideError));
+        Name = new(nameof(Localization.Name));
+        ShortName = new(nameof(Localization.ShortName));
+        Price = new(nameof(Localization.Price));
+        DescriptionToPrice = new(nameof(Localization.DescriptionToPrice));
+        DisplayTop = new(nameof(Localization.DisplayTop));
+        NextPage = new(nameof(Localization.NextPage));
+        PreviousPage = new(nameof(Localization.PreviousPage));
     }
 }

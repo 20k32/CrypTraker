@@ -94,7 +94,7 @@ public sealed class SettingsWindowViewModel : AffectUiScreen
     
     public void DarkTheme()
     {
-        App.Current.Resources.Clear();
+        App.Current.Resources.MergedDictionaries.Remove(_lightTheme);
         ExecuteInUiContext(() => App.Current.Resources.MergedDictionaries.Add(_darkTheme));
         CanLightTheme = true;
         CanDarkTheme = false;
@@ -117,7 +117,7 @@ public sealed class SettingsWindowViewModel : AffectUiScreen
     
     public void LightTheme()
     {
-        App.Current.Resources.Clear();
+        App.Current.Resources.MergedDictionaries.Remove(_darkTheme);
         ExecuteInUiContext(() => App.Current.Resources.MergedDictionaries.Add(_lightTheme));
         CanLightTheme = false;
         CanDarkTheme = true;

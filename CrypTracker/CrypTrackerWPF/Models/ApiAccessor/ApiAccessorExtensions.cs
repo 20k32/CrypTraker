@@ -10,7 +10,7 @@ public static class ApiAccessorExtensions
     public static SimpleContainer AddApiAccessor(this SimpleContainer container) =>
         container.Singleton<IApiAccessor, ApiAccessor>();
     
-    public static void ValidateResponce<TResult>(ApiAccessorResponse<TResult> response,
+    public static void ValidateResponse<TResult>(ApiAccessorResponse<TResult> response,
         System.Action<TResult> ifValidCallback)
     {
         if (response is null)
@@ -27,7 +27,7 @@ public static class ApiAccessorExtensions
         }
     }
     
-    public static async Task ValidateResponceAsync<TResult>(ApiAccessorResponse<TResult> response,
+    public static async Task ValidateResponseAsync<TResult>(ApiAccessorResponse<TResult> response,
         System.Func<TResult, Task> ifValidCallbackAsync)
     {
         if (response is null)

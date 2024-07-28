@@ -1,7 +1,8 @@
 <Application x:Class="CrypTrackerWPF.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:CrypTrackerWPF.AppContext">
+             xmlns:local="clr-namespace:CrypTrackerWPF.AppContext"
+             xmlns:converters="clr-namespace:CrypTrackerWPF.Models.Converters">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -11,6 +12,7 @@
                 <ResourceDictionary Source="Resources/Themes/Light.xaml"/>
                 <ResourceDictionary Source="Resources/Style.xaml"/>
             </ResourceDictionary.MergedDictionaries>
+            <converters:CurrencyConverter x:Key="CurrencyConverter"/>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

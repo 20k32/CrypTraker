@@ -18,9 +18,9 @@ public sealed class CoinAssetDTO : IMappable<CoinItemModel>
     {
         if (decimal.TryParse(PriceUsd, out var price))
         {
-            return new(Name, Symbol, price);
+            return new(Id, Name, Symbol, price);
         }
 
-        return new(Name, Symbol, default);
+        return new(Id, Name, Symbol, default);
     }
 }
