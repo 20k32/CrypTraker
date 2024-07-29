@@ -8,6 +8,7 @@ using System.Windows.Input;
 using Caliburn.Micro;
 using CrypTrackerWPF.Models;
 using CrypTrackerWPF.Models.ApiAccessor;
+using CrypTrackerWPF.Models.EventMessages;
 using CrypTrackerWPF.Models.ListBoxItemModels;
 using CrypTrackerWPF.Models.LocalizationExtensions;
 
@@ -15,16 +16,19 @@ namespace CrypTrackerWPF.Screens.MainWindow;
 
 public sealed class MainWindowViewModel : AffectUiScreen
 {
-    private ushort _paginationOffsetCoeff;
+    private readonly IEventAggregator _eventAggregator;
     private readonly IApiAccessor _apiAccessor;
+    private ushort _paginationOffsetCoeff;
+    
     public BindableCollection<CoinItemModel> Items { get; set; }
     
     public override string DisplayName => TranslationSource.Instance[Replicas.MainWindowTitle];
 
-    public MainWindowViewModel(IApiAccessor apiAccessor)
+    public MainWindowViewModel(IApiAccessor apiAccessor, IEventAggregator eventAggregator)
     {
         _paginationOffsetCoeff = 1;
         _apiAccessor = apiAccessor;
+        _eventAggregator = eventAggregator;
         Items = new();
     }
 
@@ -41,7 +45,7 @@ public sealed class MainWindowViewModel : AffectUiScreen
 
         await ExecuteInUiContextAsync(async () =>
         {
-            responce = await _apiAccessor.GetAssetsInRange();
+            responce = await _apiAccessor.GetAssetsInRangeAsync();
         });
 
         ApiAccessorExtensions.ValidateResponse(responce, (result)
@@ -169,7 +173,7 @@ public sealed class MainWindowViewModel : AffectUiScreen
         
         await ExecuteInUiContextAsync(async () =>
         {
-            responce = await _apiAccessor.GetAssetById(searchOptions);
+            responce = await _apiAccessor.GetAssetByIdAsync(searchOptions);
         });
         
         if (responce.Result is not null)
@@ -179,5 +183,27 @@ public sealed class MainWindowViewModel : AffectUiScreen
         }
     }
     
+    #endregion
+
+    #region Selected CoinEntity
+    
+    private CoinItemModel _selectedCoin;
+
+    public CoinItemModel SelectedCoin
+    {
+        get => _selectedCoin;
+        set
+        {
+            _selectedCoin = value;
+            NotifyOfPropertyChange();
+            
+            if (SelectedCoin is not null)
+            {
+                _eventAggregator.PublishOnUIThreadAsync(new GetCoinInfoMessage(SelectedCoin.Id))
+                    .ShouldNotAwaited();
+            }
+        }
+    }
+
     #endregion
 }

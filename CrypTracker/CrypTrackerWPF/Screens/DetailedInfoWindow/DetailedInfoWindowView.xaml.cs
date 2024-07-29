@@ -1,4 +1,5 @@
 using System.Windows.Controls;
+using System.Windows.Navigation;
 
 namespace CrypTrackerWPF.Screens.DetailedInfoWindow;
 

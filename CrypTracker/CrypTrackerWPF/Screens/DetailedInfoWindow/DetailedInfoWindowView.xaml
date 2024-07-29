@@ -3,8 +3,68 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:local="clr-namespace:CrypTrackerWPF.Screens.DetailedInfoWindow"
+             xmlns:locale="clr-namespace:CrypTrackerWPF.Models.LocalizationExtensions"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300">
-    <Grid Background="Black"></Grid>
+    <StackPanel IsEnabled="{Binding IsUiEnabled}">
+        <StackPanel Orientation="Horizontal">
+            <TextBlock Text="{locale:LocalizationBinding {x:Static locale:Replicas.Name}}"
+                       Margin="0, 0, 5, 0"/> 
+            <TextBlock Text="{Binding CurrentCoin.Name}"/>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal"
+                    Margin="0, 5">
+            <TextBlock Text="{locale:LocalizationBinding {x:Static locale:Replicas.ShortName}}"
+                       Margin="0, 0, 5, 0"/> 
+            <TextBlock Text="{Binding CurrentCoin.ShortName}"/>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal"
+                    Margin="0, 5">
+            <TextBlock Text="{locale:LocalizationBinding {x:Static locale:Replicas.Price}}"
+                       Margin="0, 0, 5, 0"/> 
+            <TextBlock Text="{Binding CurrentCoin.Price}"/>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal"
+                    Margin="0, 5">
+            <TextBlock Text="{locale:LocalizationBinding {x:Static locale:Replicas.Volume}}"
+                       Margin="0, 0, 5, 0"/> 
+            <TextBlock Text="{Binding CurrentCoin.Volume}"/>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal"
+                    Margin="0, 5">
+            <TextBlock Text="{locale:LocalizationBinding {x:Static locale:Replicas.PriceChange}}"
+                       Margin="0, 0, 5, 0"/> 
+            <TextBlock Text="{Binding CurrentCoin.PriceChange}"/>
+        </StackPanel>
+        <DataGrid ItemsSource="{Binding Items}"
+                  SelectionMode="Single"
+                  IsReadOnly="True"
+                  AutoGenerateColumns="False"
+                  Height="288.5">
+            <DataGrid.Columns>
+                <DataGridTextColumn
+                    Header="{locale:LocalizationBinding {x:Static locale:Replicas.Name}}"
+                    Binding="{Binding Name, Mode=OneTime}"
+                    Width="SizeToCells"
+                    MinWidth="150" />
+                <DataGridTextColumn
+                    Header="{locale:LocalizationBinding {x:Static locale:Replicas.Price}}"
+                    Binding="{Binding Price, Mode=OneTime, Converter={StaticResource CurrencyConverter}}"
+                    Width="150" />
+                <DataGridTemplateColumn Header="URL">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock>
+                                <Hyperlink Command="{Binding DataContext.OpenUrlCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                           CommandParameter="{Binding ExchangeUri, Mode=OneTime}"> <!-- very strange behaviour -->
+                                    <TextBlock Text="{Binding Name, Mode=OneTime}"/>
+                                </Hyperlink>
+                            </TextBlock>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+    </StackPanel>
+    
 </UserControl>

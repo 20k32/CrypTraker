@@ -27,6 +27,7 @@
                    Text="{locale:LocalizationBinding {x:Static locale:Replicas.DisplayTop}}"
                    Margin="0, 0, 5, 0" />
         <DataGrid ItemsSource="{Binding Items}"
+                  SelectedItem="{Binding SelectedCoin, Delay=1500}"
                   SelectionMode="Single"
                   IsReadOnly="True"
                   AutoGenerateColumns="False"

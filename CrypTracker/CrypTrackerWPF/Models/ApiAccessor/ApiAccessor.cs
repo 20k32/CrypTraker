@@ -62,14 +62,14 @@ public class ApiAccessor : IApiAccessor
 
     public ushort GetMaxEntries() => MAX_ENTRIES_COUNT;
     
-    public async Task<ApiAccessorResponse<IEnumerable<CoinItemModel>>> GetAssetsInRange()
+    public async Task<ApiAccessorResponse<IEnumerable<CoinItemModel>>> GetAssetsInRangeAsync()
     {
         ApiAccessorResponse<IEnumerable<CoinItemModel>> accessorResponse = new();
         try
         {
             var request = new HttpRequestMessage(HttpMethod.Get,
-                $"{ApiRoutes.ASSETS_ROUTE}?{ApiRoutes.ASSETS_LIMIT_PARAM}=" +
-                $"{_intervalLength}&{ApiRoutes.ASSETS_OFFSET_PARAM}={_intervalOffset}");
+                $"{ApiConstants.ASSETS_ROUTE}?{ApiConstants.ASSETS_LIMIT_PARAM}=" +
+                $"{_intervalLength}&{ApiConstants.ASSETS_OFFSET_PARAM}={_intervalOffset}");
 
             var response = await _httpClient.SendAsync(request);
 
@@ -93,13 +93,13 @@ public class ApiAccessor : IApiAccessor
     }
 
     
-    public async Task<ApiAccessorResponse<CoinItemModel>> GetAssetById(string id)
+    public async Task<ApiAccessorResponse<CoinItemModel>> GetAssetByIdAsync(string id)
     {
         ApiAccessorResponse<CoinItemModel> accessorResponse = new();
         try
         {
             var request = new HttpRequestMessage(HttpMethod.Get,
-                $"{ApiRoutes.ASSETS_ROUTE}/{id}");
+                $"{ApiConstants.ASSETS_ROUTE}/{id}");
 
             var response = await _httpClient.SendAsync(request);
 
@@ -121,6 +121,117 @@ public class ApiAccessor : IApiAccessor
         
         return accessorResponse;
     }
+
+    private async Task<ApiAccessorResponse<Uri>> GetMarketUriAsync(string marketId)
+    {
+        using (var httpClient = HttpClientFactory.CreateClient())
+        {
+            ApiAccessorResponse<Uri> accessorResponse = new();
+            try
+            {
+                var request = new HttpRequestMessage(HttpMethod.Get,
+                    $"{ApiConstants.EXCHANGES_ROUTE}/{marketId}");
+
+                var response = await httpClient.SendAsync(request);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var assets = await response.Content.ReadFromJsonAsync<MarketUriDTO>();
+                    accessorResponse.Result = new Uri(assets.Data.ExchangeUrl);
+                }
+                else
+                {
+                    accessorResponse.Message =
+                        $"{TranslationSource.Instance[Replicas.ServerSideError]} {response.StatusCode}";
+                }
+            }
+            catch (Exception _)
+            {
+                accessorResponse.Message = TranslationSource.Instance[Replicas.ClientSideError];
+            }
+        
+            return accessorResponse;
+        }
+    }
+    
+    public async Task<ApiAccessorResponse<IEnumerable<CoinMarketModel>>> GetAssetMarketsAsync(string assetId)
+    {
+        using (var httpClient = HttpClientFactory.CreateClient())
+        {
+            ApiAccessorResponse<IEnumerable<CoinMarketModel>> accessorResponse = new();
+            try
+            {
+                var request = new HttpRequestMessage(HttpMethod.Get,
+                    $"{ApiConstants.MARKETS_ROUTE}?{ApiConstants.COIN_ID_PARAM}={assetId}" +
+                    $"&{ApiConstants.EXCHANGE_CURRENCY_PARAM}={ApiConstants.EXCHANGE_CURRENCY_PARAM_VALUE}" +
+                    $"&{ApiConstants.ASSETS_LIMIT_PARAM}=10");
+
+                var response = await httpClient.SendAsync(request);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var markets = await response.Content.ReadFromJsonAsync<CoinMarketsDTO>();
+                    if (markets.Data is not null)
+                    {
+                        var result = new List<CoinMarketModel>();
+                        foreach (var marketDto in markets.Data)
+                        {
+                            var uri = await GetMarketUriAsync(marketDto.ExchangeId);
+                            var coinMarketModel =
+                                new CoinMarketModel(marketDto.ExchangeId, marketDto.PriceUsd, uri.Result);
+                            result.Add(coinMarketModel);
+                        }
+                        accessorResponse.Result = result;
+                    }
+                    else
+                    {
+                        accessorResponse.Message = TranslationSource.Instance[Replicas.ClientSideError];
+                    }
+                }
+                else
+                {
+                    accessorResponse.Message =
+                        $"{TranslationSource.Instance[Replicas.ServerSideError]} {response.StatusCode}";
+                }
+            }
+            catch (Exception _)
+            {
+                accessorResponse.Message = TranslationSource.Instance[Replicas.ClientSideError];
+            }
+            return accessorResponse;
+        }
+    }
+    
+    public async Task<ApiAccessorResponse<DetailedInfoCurrencyModel>> 
+        GetAssetDetailedInfoByIdAsync(string id)
+    {
+        ApiAccessorResponse<DetailedInfoCurrencyModel> accessorResponse = new();
+        try
+        {
+            var request = new HttpRequestMessage(HttpMethod.Get,
+                $"{ApiConstants.ASSETS_ROUTE}/{id}");
+
+            var response = await _httpClient.SendAsync(request);
+
+            if (response.IsSuccessStatusCode)
+            {
+                var assets = await response.Content.ReadFromJsonAsync<SingleCoinAssetDTO>();
+                accessorResponse.Result = assets.Data.MapToDetailedInfoCurrency();
+            }
+            else
+            {
+                accessorResponse.Message =
+                    $"{TranslationSource.Instance[Replicas.ServerSideError]} {response.StatusCode}";
+            }
+        }
+        catch (Exception _)
+        {
+            accessorResponse.Message = TranslationSource.Instance[Replicas.ClientSideError];
+        }
+        
+        return accessorResponse;
+    }
+    
     
     public void Dispose()
     {

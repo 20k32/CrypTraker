@@ -25,9 +25,13 @@ public sealed class CurrencyConverter : IValueConverter
     
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
-        if (value is decimal price)
+        if (value is decimal priceM)
         {
-            return TrimZeroes(price.ToString());
+            return TrimZeroes(priceM.ToString());
+        }
+        if (value is string priceStr)
+        {
+            return TrimZeroes(priceStr);
         }
 
         return value;

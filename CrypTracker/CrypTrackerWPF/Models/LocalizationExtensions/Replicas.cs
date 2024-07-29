@@ -29,6 +29,8 @@ public static class Replicas
     public static readonly PropertyPath NextPage;
     public static readonly PropertyPath PreviousPage;
     public static readonly PropertyPath ResetButtonName;
+    public static readonly PropertyPath Volume;
+    public static readonly PropertyPath PriceChange;
     static Replicas()
     {
         Greetings = new(nameof(Localization.Greetings));
@@ -56,5 +58,7 @@ public static class Replicas
         NextPage = new(nameof(Localization.NextPage));
         PreviousPage = new(nameof(Localization.PreviousPage));
         ResetButtonName = new(nameof(Localization.ResetButtonName));
+        Volume = new(nameof(Localization.Volume));
+        PriceChange = new(nameof(Localization.PriceChange));
     }
 }
