@@ -14,56 +14,58 @@
                     VerticalAlignment="Center"
                     HorizontalAlignment="Center"
                     Margin="0, 10">
-            <TextBox Text="Some search text" Margin="0, 0, 10, 0"
-                     Width="200"/>
-            <Button Content="Reset"/>
+            <TextBox Text="{Binding SearchOptions, 
+                                Mode=TwoWay, 
+                                UpdateSourceTrigger=PropertyChanged,
+                                Delay=1000}"
+                Margin="0, 0, 10, 0"
+                Width="200" />
+            <Button x:Name="Reset"
+                    Content="{locale:LocalizationBinding {x:Static locale:Replicas.ResetButtonName}}" />
         </StackPanel>
+        <TextBlock TextAlignment="Center"
+                   Text="{locale:LocalizationBinding {x:Static locale:Replicas.DisplayTop}}"
+                   Margin="0, 0, 5, 0" />
         <DataGrid ItemsSource="{Binding Items}"
                   SelectionMode="Single"
                   IsReadOnly="True"
                   AutoGenerateColumns="False"
                   HorizontalContentAlignment="Center"
-                  HorizontalAlignment="Center">
+                  HorizontalAlignment="Center"
+                  Height="531">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="{locale:LocalizationBinding {x:Static locale:Replicas.ShortName}}" 
-                                    Binding="{Binding Name, Mode=OneTime}"
-                                    Width="SizeToCells"
-                                    MinWidth="150"/>
-                <DataGridTextColumn Header="{locale:LocalizationBinding {x:Static locale:Replicas.Name}}" 
-                                    Binding="{Binding ShortName, Mode=OneTime}"
-                                    Width="SizeToHeader"/>
-                <DataGridTextColumn Header="{locale:LocalizationBinding {x:Static locale:Replicas.Price}}" 
-                                    Binding="{Binding Price, Mode=OneTime,
+                <DataGridTextColumn
+                    Header="{locale:LocalizationBinding {x:Static locale:Replicas.Name}}"
+                    Binding="{Binding Name, Mode=OneTime}"
+                    Width="SizeToCells"
+                    MinWidth="300" />
+                <DataGridTextColumn
+                    Header="{locale:LocalizationBinding {x:Static locale:Replicas.ShortName}}"
+                    Binding="{Binding ShortName, Mode=OneTime}"
+                    Width="SizeToHeader" />
+                <DataGridTextColumn
+                    Header="{locale:LocalizationBinding {x:Static locale:Replicas.Price}}"
+                    Binding="{Binding Price, Mode=OneTime,
                                         Converter={StaticResource CurrencyConverter}}"
-                                    Width="SizeToCells"/>
+                    Width="SizeToCells" />
             </DataGrid.Columns>
         </DataGrid>
         <StackPanel Orientation="Vertical"
-                    Width="300">
-            <StackPanel Orientation="Horizontal" 
-                        VerticalAlignment="Center"
-                        HorizontalAlignment="Center"
-                        Margin="10">
-                <TextBlock Text="{locale:LocalizationBinding {x:Static locale:Replicas.DisplayTop}}" Margin="0, 0, 5, 0"/>
-                <ComboBox Width="100" SelectedIndex="{Binding SelectedIndexTop}">
-                    <ComboBoxItem>5</ComboBoxItem>
-                    <ComboBoxItem>10</ComboBoxItem>
-                    <ComboBoxItem>15</ComboBoxItem>
-                    <ComboBoxItem>20</ComboBoxItem>
-                </ComboBox>
-            </StackPanel>
+                    Margin="0, 10, 0, 0">
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
-                <Button Grid.Column="0"  
+                <Button x:Name="PreviousPage"
+                        Grid.Column="0"
                         Content="{locale:LocalizationBinding {x:Static locale:Replicas.PreviousPage}}"
-                        MinWidth="120"/>
-                <Button Grid.Column="2"  
+                        MinWidth="150" />
+                <Button x:Name="NextPage"
+                        Grid.Column="2"
                         Content="{locale:LocalizationBinding {x:Static locale:Replicas.NextPage}}"
-                        MinWidth="120"/>
+                        MinWidth="150" />
             </Grid>
         </StackPanel>
         <!--<TextBlock>
@@ -72,5 +74,5 @@
             </Hyperlink>
         </TextBlock>-->
     </StackPanel>
-    
+
 </UserControl>
