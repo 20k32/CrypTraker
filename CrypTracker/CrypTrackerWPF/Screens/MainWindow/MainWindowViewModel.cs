@@ -176,9 +176,10 @@ public sealed class MainWindowViewModel : AffectUiScreen
             responce = await _apiAccessor.GetAssetByIdAsync(searchOptions);
         });
         
+        Items.Clear();
+        
         if (responce.Result is not null)
         {
-            Items.Clear();
             Items.Add(responce.Result);
         }
     }

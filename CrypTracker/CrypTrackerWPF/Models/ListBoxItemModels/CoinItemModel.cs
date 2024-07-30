@@ -13,3 +13,4 @@ public sealed class CoinItemModel
     public CoinItemModel(string id, string name, string shortName, string price)
         => (Id, Name, ShortName, Price) = (id, name, shortName, price);
 }
+

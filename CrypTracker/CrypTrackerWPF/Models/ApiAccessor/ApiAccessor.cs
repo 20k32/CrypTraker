@@ -24,14 +24,7 @@ public class ApiAccessor : IApiAccessor
     
     public ApiAccessor()
     {
-        _httpClient = new()
-        {
-            DefaultRequestHeaders =
-            {
-                { "Accept", "text/json" },
-                { "Accept-Encoding", "deflate" }
-            }
-        };
+        _httpClient = HttpClientFactory.CreateClient();
     }
 
     public void SetIntervalLength(ushort value)
@@ -163,7 +156,6 @@ public class ApiAccessor : IApiAccessor
             {
                 var request = new HttpRequestMessage(HttpMethod.Get,
                     $"{ApiConstants.MARKETS_ROUTE}?{ApiConstants.COIN_ID_PARAM}={assetId}" +
-                    $"&{ApiConstants.EXCHANGE_CURRENCY_PARAM}={ApiConstants.EXCHANGE_CURRENCY_PARAM_VALUE}" +
                     $"&{ApiConstants.ASSETS_LIMIT_PARAM}=10");
 
                 var response = await httpClient.SendAsync(request);
@@ -177,8 +169,7 @@ public class ApiAccessor : IApiAccessor
                         foreach (var marketDto in markets.Data)
                         {
                             var uri = await GetMarketUriAsync(marketDto.ExchangeId);
-                            var coinMarketModel =
-                                new CoinMarketModel(marketDto.ExchangeId, marketDto.PriceUsd, uri.Result);
+                            var coinMarketModel = marketDto.MapToCoinMarketModel(uri.Result);
                             result.Add(coinMarketModel);
                         }
                         accessorResponse.Result = result;

@@ -80,6 +80,4 @@ public sealed class ShellWindowViewModel : Conductor<Screen>.Collection.OneActiv
         _eventAggregator.Unsubscribe(this);
         return base.OnDeactivateAsync(close, cancellationToken);
     }
-    
-    
 }

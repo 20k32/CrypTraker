@@ -11,10 +11,9 @@ public static class HttpClientFactory
     {
         return new HttpClient()
         {
-
             DefaultRequestHeaders =
             {
-                { "Accept", "text/json" },
+                { "Accept", "application/json" },
                 { "Accept-Encoding", "deflate" }
             }
         };

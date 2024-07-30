@@ -31,6 +31,7 @@ public static class Replicas
     public static readonly PropertyPath ResetButtonName;
     public static readonly PropertyPath Volume;
     public static readonly PropertyPath PriceChange;
+    public static readonly PropertyPath CurrencyName;
     static Replicas()
     {
         Greetings = new(nameof(Localization.Greetings));
@@ -60,5 +61,6 @@ public static class Replicas
         ResetButtonName = new(nameof(Localization.ResetButtonName));
         Volume = new(nameof(Localization.Volume));
         PriceChange = new(nameof(Localization.PriceChange));
+        CurrencyName = new(nameof(Localization.CurrencyName));
     }
 }

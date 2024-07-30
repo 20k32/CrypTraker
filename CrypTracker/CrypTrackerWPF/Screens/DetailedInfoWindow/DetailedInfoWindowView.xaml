@@ -8,31 +8,31 @@
              d:DesignHeight="300" d:DesignWidth="300">
     <StackPanel IsEnabled="{Binding IsUiEnabled}">
         <StackPanel Orientation="Horizontal">
-            <TextBlock Text="{locale:LocalizationBinding {x:Static locale:Replicas.Name}}"
+            <TextBlock Text="{locale:LocalizationBinding {x:Static locale:Replicas.Name}, Converter={StaticResource TextConverter}}"
                        Margin="0, 0, 5, 0"/> 
             <TextBlock Text="{Binding CurrentCoin.Name}"/>
         </StackPanel>
         <StackPanel Orientation="Horizontal"
                     Margin="0, 5">
-            <TextBlock Text="{locale:LocalizationBinding {x:Static locale:Replicas.ShortName}}"
+            <TextBlock Text="{locale:LocalizationBinding {x:Static locale:Replicas.ShortName}, Converter={StaticResource TextConverter}}"
                        Margin="0, 0, 5, 0"/> 
             <TextBlock Text="{Binding CurrentCoin.ShortName}"/>
         </StackPanel>
         <StackPanel Orientation="Horizontal"
                     Margin="0, 5">
-            <TextBlock Text="{locale:LocalizationBinding {x:Static locale:Replicas.Price}}"
+            <TextBlock Text="{locale:LocalizationBinding {x:Static locale:Replicas.Price}, Converter={StaticResource TextConverter}}"
                        Margin="0, 0, 5, 0"/> 
             <TextBlock Text="{Binding CurrentCoin.Price}"/>
         </StackPanel>
         <StackPanel Orientation="Horizontal"
                     Margin="0, 5">
-            <TextBlock Text="{locale:LocalizationBinding {x:Static locale:Replicas.Volume}}"
+            <TextBlock Text="{locale:LocalizationBinding {x:Static locale:Replicas.Volume}, Converter={StaticResource TextConverter}}"
                        Margin="0, 0, 5, 0"/> 
             <TextBlock Text="{Binding CurrentCoin.Volume}"/>
         </StackPanel>
         <StackPanel Orientation="Horizontal"
                     Margin="0, 5">
-            <TextBlock Text="{locale:LocalizationBinding {x:Static locale:Replicas.PriceChange}}"
+            <TextBlock Text="{locale:LocalizationBinding {x:Static locale:Replicas.PriceChange}, Converter={StaticResource TextConverter}}"
                        Margin="0, 0, 5, 0"/> 
             <TextBlock Text="{Binding CurrentCoin.PriceChange}"/>
         </StackPanel>
@@ -46,17 +46,21 @@
                     Header="{locale:LocalizationBinding {x:Static locale:Replicas.Name}}"
                     Binding="{Binding Name, Mode=OneTime}"
                     Width="SizeToCells"
-                    MinWidth="150" />
+                    MinWidth="200" />
                 <DataGridTextColumn
                     Header="{locale:LocalizationBinding {x:Static locale:Replicas.Price}}"
                     Binding="{Binding Price, Mode=OneTime, Converter={StaticResource CurrencyConverter}}"
-                    Width="150" />
-                <DataGridTemplateColumn Header="URL">
+                    Width="200" />
+                <DataGridTextColumn
+                    Header="{locale:LocalizationBinding {x:Static locale:Replicas.CurrencyName}}"
+                    Binding="{Binding PriceCurrency, Mode=OneTime}"
+                    Width="200" />
+                <DataGridTemplateColumn Header="URL" Width="200">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <TextBlock>
                                 <Hyperlink Command="{Binding DataContext.OpenUrlCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                                           CommandParameter="{Binding ExchangeUri, Mode=OneTime}"> <!-- very strange behaviour -->
+                                           CommandParameter="{Binding ExchangeUri, Mode=OneTime}">
                                     <TextBlock Text="{Binding Name, Mode=OneTime}"/>
                                 </Hyperlink>
                             </TextBlock>

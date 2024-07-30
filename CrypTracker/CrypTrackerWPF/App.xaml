@@ -13,6 +13,7 @@
                 <ResourceDictionary Source="Resources/Style.xaml"/>
             </ResourceDictionary.MergedDictionaries>
             <converters:CurrencyConverter x:Key="CurrencyConverter"/>
+            <converters:TextConverter x:Key="TextConverter"/>
         </ResourceDictionary>
     </Application.Resources>
 </Application>
