@@ -1,6 +1,7 @@
 using System;
 using System.Diagnostics;
 using System.Globalization;
+using System.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
@@ -18,7 +19,7 @@ namespace CrypTrackerWPF.Screens.ShellWindow;
 
 //todo: dispose apiAccessor
 public sealed class ShellWindowViewModel : Conductor<Screen>.Collection.OneActive, 
-    IHandle<ChangeNamesMessage>
+    IHandle<ChangeNamesMessage>, IHandle<NavigateToExchangeTabMessage>
 {
     
     private readonly MainWindowViewModel _mainWindow;
@@ -36,6 +37,7 @@ public sealed class ShellWindowViewModel : Conductor<Screen>.Collection.OneActiv
                                 SettingsWindowViewModel settingsWindow)
     {
         _eventAggregator = eventAggregator;
+        _eventAggregator.SubscribeOnUIThread(this);
         _mainWindow = mainWindow;
         _detailedWindow = detailedWindow;
         _convertWindow = convertWindow;
@@ -68,16 +70,16 @@ public sealed class ShellWindowViewModel : Conductor<Screen>.Collection.OneActiv
         
         return Task.CompletedTask;
     }
-    
-    protected override Task OnActivateAsync(CancellationToken cancellationToken) {
-        _eventAggregator.SubscribeOnUIThread(this);
-        return base.OnActivateAsync(cancellationToken);
-    }
-
 
     protected override Task OnDeactivateAsync(bool close, CancellationToken cancellationToken)
     {
         _eventAggregator.Unsubscribe(this);
+        _apiAccessor.Dispose();
         return base.OnDeactivateAsync(close, cancellationToken);
+    }
+
+    public async Task HandleAsync(NavigateToExchangeTabMessage message, CancellationToken cancellationToken)
+    {
+        await ActivateItemAsync(_convertWindow);
     }
 }

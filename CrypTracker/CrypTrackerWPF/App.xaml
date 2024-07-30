@@ -14,6 +14,7 @@
             </ResourceDictionary.MergedDictionaries>
             <converters:CurrencyConverter x:Key="CurrencyConverter"/>
             <converters:TextConverter x:Key="TextConverter"/>
+            <converters:VisibilityConverter x:Key="VisibilityConverter"/>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

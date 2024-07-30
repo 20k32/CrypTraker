@@ -14,7 +14,8 @@
         FontWeight="Medium">
     
     <TabControl x:Name="Items"
-                Margin="5">
+                Margin="5"
+                >
         <TabControl.ItemTemplate>
             <ItemContainerTemplate>
                 <TextBlock Text="{Binding DisplayName}" />

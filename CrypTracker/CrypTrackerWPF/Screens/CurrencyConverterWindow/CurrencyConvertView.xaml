@@ -6,5 +6,40 @@
              xmlns:local="clr-namespace:CrypTrackerWPF.Screens.CurrencyConverterWindow"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300">
-    <TextBlock Text="Currency converter"/>
+    <StackPanel Orientation="Vertical">
+        <StackPanel Orientation="Horizontal">
+            <TextBlock Text="The quantity of " VerticalAlignment="Center"/>
+            <TextBlock Text="{Binding BuyCoinName}" VerticalAlignment="Center"/>
+            <Border Style="{StaticResource TextBoxBorder}"
+                    Margin="10"
+                    HorizontalAlignment="Center">
+                <StackPanel Orientation="Horizontal">
+                    <TextBox
+                        Text="{Binding BuyQuantity, 
+                             Mode=TwoWay, 
+                             UpdateSourceTrigger=PropertyChanged}"
+                        Width="200" />
+                </StackPanel>
+            </Border>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal">
+            <TextBlock Text="The quantity of " VerticalAlignment="Center"/>
+            <TextBlock Text="{Binding SellCoinName}" VerticalAlignment="Center"/>
+            <Border Style="{StaticResource TextBoxBorder}"
+                    Margin="10"
+                    HorizontalAlignment="Center">
+                <StackPanel Orientation="Horizontal">
+                    <TextBox
+                        Text="{Binding SellQuantity, 
+                             Mode=TwoWay, 
+                             UpdateSourceTrigger=PropertyChanged}"
+                        Width="200" />
+                </StackPanel>
+            </Border>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal">
+            <TextBlock Text="Result"/>
+            <TextBlock Text="{Binding ConvertResul}"/>
+        </StackPanel>
+    </StackPanel>
 </UserControl>

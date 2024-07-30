@@ -6,7 +6,9 @@
              xmlns:locale="clr-namespace:CrypTrackerWPF.Models.LocalizationExtensions"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300">
-    <StackPanel IsEnabled="{Binding IsUiEnabled}">
+    <StackPanel IsEnabled="{Binding IsUiEnabled}"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center">
         <StackPanel Orientation="Horizontal">
             <TextBlock Text="{locale:LocalizationBinding {x:Static locale:Replicas.Name}, Converter={StaticResource TextConverter}}"
                        Margin="0, 0, 5, 0"/> 

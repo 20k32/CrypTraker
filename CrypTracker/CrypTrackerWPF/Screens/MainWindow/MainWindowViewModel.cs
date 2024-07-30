@@ -4,22 +4,29 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 using Caliburn.Micro;
 using CrypTrackerWPF.Models;
 using CrypTrackerWPF.Models.ApiAccessor;
 using CrypTrackerWPF.Models.EventMessages;
 using CrypTrackerWPF.Models.ListBoxItemModels;
 using CrypTrackerWPF.Models.LocalizationExtensions;
+using Microsoft.Xaml.Behaviors.Core;
 
 namespace CrypTrackerWPF.Screens.MainWindow;
 
-public sealed class MainWindowViewModel : AffectUiScreen
+public sealed class MainWindowViewModel : AffectUiScreen, IHandle<ExchangeDataLoadedMessage>
 {
+    
     private readonly IEventAggregator _eventAggregator;
     private readonly IApiAccessor _apiAccessor;
     private ushort _paginationOffsetCoeff;
-    
+    private bool _popupMenuRequested;
+
+    public ICommand AddCommand { get; init; }
+    public ICommand RemoveCommand { get; init; }
     public BindableCollection<CoinItemModel> Items { get; set; }
     
     public override string DisplayName => TranslationSource.Instance[Replicas.MainWindowTitle];
@@ -29,9 +36,20 @@ public sealed class MainWindowViewModel : AffectUiScreen
         _paginationOffsetCoeff = 1;
         _apiAccessor = apiAccessor;
         _eventAggregator = eventAggregator;
+        _eventAggregator.SubscribeOnUIThread(this);
+        _popupMenuRequested = false;
         Items = new();
+        AddCommand = new RelayCommand(AddToConverter);
+        RemoveCommand = new RelayCommand(RemoveFromConverter);
+        ExchangeUnit = new();
     }
-
+    
+    public void PreviewMouseRightButtonUp(MouseEventArgs eventArgs)
+    {
+        _popupMenuRequested = true;
+        eventArgs.Handled = false;
+    }
+    
     protected override async Task OnInitializeAsync(CancellationToken cancellationToken)
     {
         _apiAccessor.SetIntervalLength(20);
@@ -197,14 +215,79 @@ public sealed class MainWindowViewModel : AffectUiScreen
         {
             _selectedCoin = value;
             NotifyOfPropertyChange();
+
+            if (SelectedCoin is null)
+            {
+                return;
+            }
             
-            if (SelectedCoin is not null)
+            if (!_popupMenuRequested)
             {
                 _eventAggregator.PublishOnUIThreadAsync(new GetCoinInfoMessage(SelectedCoin.Id))
                     .ShouldNotAwaited();
-            }
+            } 
+            _popupMenuRequested = false;
         }
     }
 
     #endregion
+
+    #region Selected ExchangeUnitEntity
+
+    public ExchangeUnitModel ExchangeUnit { get; set; }
+    
+    public bool IsGroupPanelVisible =>
+        ExchangeUnit.BuyCurrency.IsFilled || ExchangeUnit.SellCurrency.IsFilled;
+
+    private bool _isExchangeLoaded;
+
+    public bool IsExchangeLoaded
+    {
+        get => _isExchangeLoaded;
+        set
+        {
+            _isExchangeLoaded = value;
+            NotifyOfPropertyChange();
+        }
+    }
+    #endregion
+    
+    public async void AddToConverter(object _)
+    {
+        ExchangeUnit.AddValueAndNotify(SelectedCoin.Id, SelectedCoin.Name);
+        NotifyOfPropertyChange(nameof(IsGroupPanelVisible));
+
+        if (ExchangeUnit.BuyCurrency.IsFilled && ExchangeUnit.SellCurrency.IsFilled)
+        {
+            IsExchangeLoaded = false;
+            
+            await _eventAggregator.PublishOnUIThreadAsync(
+                new LoadExchangeDataMessage(ExchangeUnit.BuyCurrency.AssetId,
+                    ExchangeUnit.SellCurrency.AssetId,
+                    ExchangeUnit.BuyCurrency.AssetName,
+                    ExchangeUnit.SellCurrency.AssetName));
+        }
+        else
+        {
+            IsExchangeLoaded = false;
+        }
+    }
+    
+    public void RemoveFromConverter(object _)
+    {
+        ExchangeUnit.RemoveValueAndNotify(SelectedCoin.Id);
+        NotifyOfPropertyChange(nameof(IsGroupPanelVisible));
+        IsExchangeLoaded = false;
+    }
+
+    public Task HandleAsync(ExchangeDataLoadedMessage message, CancellationToken cancellationToken)
+    {
+        IsExchangeLoaded = true;
+        return Task.CompletedTask;
+    }
+
+    public async Task OpenExchangeTab()
+    {
+        await _eventAggregator.PublishOnUIThreadAsync(new NavigateToExchangeTabMessage());
+    }
 }

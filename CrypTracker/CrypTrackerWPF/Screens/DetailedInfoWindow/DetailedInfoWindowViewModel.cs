@@ -48,12 +48,6 @@ public sealed class DetailedInfoWindowViewModel : AffectUiScreen, IHandle<GetCoi
 
     public async Task HandleAsync(GetCoinInfoMessage message, CancellationToken cancellationToken)
     {
-        if (!IsUiEnabled
-            || message is null)
-        {
-            return;
-        }
-        
         ApiAccessorResponse<IEnumerable<CoinMarketModel>> marketsResponse = null!;
         await ExecuteInUiContextAsync(
             async() => marketsResponse = await _apiAccessor.GetAssetMarketsAsync(message.Id));
