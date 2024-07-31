@@ -16,16 +16,13 @@ public sealed class CoinAssetDTO : IMappable<CoinItemModel>, IMappable<DetailedI
     public CoinAssetDTO()
     { }
     
-    public CoinItemModel Map()
+    public void Map(out CoinItemModel entity)
     {
-        return new(Id, Name, Symbol, PriceUsd);
+        entity = new(Id, Name, Symbol, PriceUsd);
     }
 
-    DetailedInfoCurrencyModel IMappable<DetailedInfoCurrencyModel>.Map()
+    public void Map(out DetailedInfoCurrencyModel entity)
     {
-        return new(Id, Name, Symbol, PriceUsd, Supply, ChangePercent24Hr);
+        entity = new(Id, Name, Symbol, PriceUsd, Supply, ChangePercent24Hr);
     }
-
-    public DetailedInfoCurrencyModel MapToDetailedInfoCurrency() => 
-        (this as IMappable<DetailedInfoCurrencyModel>).Map();
 }

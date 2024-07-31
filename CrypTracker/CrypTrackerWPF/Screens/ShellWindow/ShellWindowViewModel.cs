@@ -17,9 +17,8 @@ using CrypTrackerWPF.Screens.SettingsWindow;
 
 namespace CrypTrackerWPF.Screens.ShellWindow;
 
-//todo: dispose apiAccessor
 public sealed class ShellWindowViewModel : Conductor<Screen>.Collection.OneActive, 
-    IHandle<ChangeNamesMessage>, IHandle<NavigateToExchangeTabMessage>
+    IHandle<ChangeNamesMessage>, IHandle<NavigateToConvertTabMessage>
 {
     
     private readonly MainWindowViewModel _mainWindow;
@@ -78,7 +77,7 @@ public sealed class ShellWindowViewModel : Conductor<Screen>.Collection.OneActiv
         return base.OnDeactivateAsync(close, cancellationToken);
     }
 
-    public async Task HandleAsync(NavigateToExchangeTabMessage message, CancellationToken cancellationToken)
+    public async Task HandleAsync(NavigateToConvertTabMessage message, CancellationToken cancellationToken)
     {
         await ActivateItemAsync(_convertWindow);
     }

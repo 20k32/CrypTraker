@@ -1,5 +1,8 @@
+using System;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 using Caliburn.Micro;
 using CrypTrackerWPF.Models.ApiAccessor;
 using CrypTrackerWPF.Models.EventMessages;
@@ -7,11 +10,10 @@ using CrypTrackerWPF.Models.LocalizationExtensions;
 
 namespace CrypTrackerWPF.Screens.CurrencyConverterWindow;
 
-public sealed class CurrencyConvertViewModel : Screen, IHandle<LoadExchangeDataMessage>
+public sealed class CurrencyConvertViewModel : Screen, IHandle<LoadConvertDataMessage>
 {
     private decimal _buyPriceM;
     private decimal _sellPriceM;
-    private decimal _buyQuantityM;
     private decimal _sellQuantityM;
     private readonly IEventAggregator _eventAggregator;
     private readonly IApiAccessor _apiAccessor;
@@ -60,23 +62,10 @@ public sealed class CurrencyConvertViewModel : Screen, IHandle<LoadExchangeDataM
 
     #endregion
 
-    #region BuyQuantity
-
-    private string _buyQuantity;
-
-    public string BuyQuantity
-    {
-        get => _buyQuantity;
-        set
-        {
-            _buyQuantity = value;
-            NotifyOfPropertyChange();
-        }
-    }
-    #endregion
-
     #region SellQuantity
 
+    private bool _isSellQuantityCorrect;
+    
     private string _sellQuantity;
 
     public string SellQuantity
@@ -86,11 +75,23 @@ public sealed class CurrencyConvertViewModel : Screen, IHandle<LoadExchangeDataM
         {
             _sellQuantity = value;
             NotifyOfPropertyChange();
+            ValidateBuyQuantity();
+            if (_isSellQuantityCorrect)
+            {
+                Convert();
+            }
         }
     }
-
     #endregion
     
+    public bool IsErrorVisible => !_isSellQuantityCorrect;
+    public bool IsResultVisible => !IsErrorVisible;
+
+    public void NotifyOfErrorChange()
+    {
+        NotifyOfPropertyChange(nameof(IsErrorVisible));
+        NotifyOfPropertyChange(nameof(IsResultVisible));
+    }
     
     public override string DisplayName
     {
@@ -104,7 +105,7 @@ public sealed class CurrencyConvertViewModel : Screen, IHandle<LoadExchangeDataM
         _apiAccessor = apiAccessor;
     }
 
-    public async Task HandleAsync(LoadExchangeDataMessage message, CancellationToken cancellationToken)
+    public async Task HandleAsync(LoadConvertDataMessage message, CancellationToken cancellationToken)
     {
         BuyCoinName = message.BuyCurrencyName;
         SellCoinName = message.SellCurrencyName;
@@ -118,5 +119,46 @@ public sealed class CurrencyConvertViewModel : Screen, IHandle<LoadExchangeDataM
             (result) => _sellPriceM = decimal.Parse(sellCoinResult.Result.Price));
         
         await _eventAggregator.PublishOnUIThreadAsync(new ExchangeDataLoadedMessage());
+    }
+
+
+    private void ValidateBuyQuantity()
+    {
+        if (decimal.TryParse(SellQuantity, out _sellQuantityM))
+        {
+            _isSellQuantityCorrect = true;
+        }
+        else
+        {
+            _isSellQuantityCorrect = false;
+        }
+        NotifyOfErrorChange();
+    }
+    
+    private void Convert()
+    {
+        try
+        {
+            checked
+            {
+                decimal totalBuyPrice =  _sellPriceM * _sellQuantityM;
+                decimal converter = totalBuyPrice / _buyPriceM;
+                ConvertResul = converter.ToString();
+            }
+        }
+        catch
+        {
+            _isSellQuantityCorrect = false;
+            NotifyOfErrorChange();
+        }
+    }
+
+    protected override Task OnDeactivateAsync(bool close, CancellationToken cancellationToken)
+    {
+        _sellQuantity = string.Empty;
+        NotifyOfPropertyChange(nameof(SellQuantity));
+        _isSellQuantityCorrect = false;
+        NotifyOfErrorChange();
+        return base.OnDeactivateAsync(close, cancellationToken);
     }
 }

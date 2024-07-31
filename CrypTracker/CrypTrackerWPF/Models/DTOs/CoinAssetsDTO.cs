@@ -4,15 +4,17 @@ using CrypTrackerWPF.Models.ListBoxItemModels;
 
 namespace CrypTrackerWPF.Models.DTOs;
 
-public sealed class CoinAssetsDTO : IMappable<IEnumerable<CoinItemModel>>
+public sealed class CoinAssetsDTO : IMappable<List<CoinItemModel>>
 {
     public List<CoinAssetDTO> Data { get; set; }
     
-    public IEnumerable<CoinItemModel> Map()
+    public void Map(out List<CoinItemModel> entity)
     {
+        entity = new List<CoinItemModel>(Data.Count);
         foreach (var item in Data)
         {
-            yield return item.Map();
+            item.Map(out CoinItemModel coinItemModel);
+            entity.Add(coinItemModel);
         }
     }
 }

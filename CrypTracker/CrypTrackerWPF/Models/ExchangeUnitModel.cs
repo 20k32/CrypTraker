@@ -60,36 +60,36 @@ public sealed class ExchangeUnitModel
     
     public void AddValueAndNotify(string id, string name)
     {
-        if (string.IsNullOrEmpty(BuyCurrency.AssetId))
-        {
-            BuyCurrency.AssetId = id;
-            BuyCurrency.AssetName = name;
-        }
-        else if (string.IsNullOrEmpty(SellCurrency.AssetId)
+        if (string.IsNullOrEmpty(SellCurrency.AssetId)
                  && !BuyCurrency.Equals(id))
         {
             SellCurrency.AssetId = id;
             SellCurrency.AssetName = name;
         }
+        else if (string.IsNullOrEmpty(BuyCurrency.AssetId))
+        {
+            BuyCurrency.AssetId = id;
+            BuyCurrency.AssetName = name;
+        }
     }
     
     public void RemoveValueAndNotify(string id)
     {
+        if (SellCurrency.Equals(id))
+        {
+            SellCurrency.Clear();
+        }
         if (BuyCurrency.Equals(id))
         {
             BuyCurrency.Clear();
         }
-        else if (SellCurrency.Equals(id))
+        if (SellCurrency.IsFilled)
         {
             SellCurrency.Clear();
         }
         else if (BuyCurrency.IsFilled)
         {
             BuyCurrency.Clear();
-        }
-        else if (SellCurrency.IsFilled)
-        {
-            SellCurrency.Clear();
         }
     }
 }

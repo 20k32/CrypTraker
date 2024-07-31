@@ -55,9 +55,9 @@ public class ApiAccessor : IApiAccessor
 
     public ushort GetMaxEntries() => MAX_ENTRIES_COUNT;
     
-    public async Task<ApiAccessorResponse<IEnumerable<CoinItemModel>>> GetAssetsInRangeAsync()
+    public async Task<ApiAccessorResponse<List<CoinItemModel>>> GetAssetsInRangeAsync()
     {
-        ApiAccessorResponse<IEnumerable<CoinItemModel>> accessorResponse = new();
+        ApiAccessorResponse<List<CoinItemModel>> accessorResponse = new();
         try
         {
             var request = new HttpRequestMessage(HttpMethod.Get,
@@ -69,7 +69,7 @@ public class ApiAccessor : IApiAccessor
             if (response.IsSuccessStatusCode)
             {
                 var assets = await response.Content.ReadFromJsonAsync<CoinAssetsDTO>();
-                accessorResponse.Result = assets.Map();
+                assets.Map(out accessorResponse.Result);
             }
             else
             {
@@ -99,7 +99,7 @@ public class ApiAccessor : IApiAccessor
             if (response.IsSuccessStatusCode)
             {
                 var assets = await response.Content.ReadFromJsonAsync<SingleCoinAssetDTO>();
-                accessorResponse.Result = assets.Data.Map();
+                assets.Data.Map(out accessorResponse.Result);
             }
             else
             {
@@ -147,11 +147,11 @@ public class ApiAccessor : IApiAccessor
         }
     }
     
-    public async Task<ApiAccessorResponse<IEnumerable<CoinMarketModel>>> GetAssetMarketsAsync(string assetId)
+    public async Task<ApiAccessorResponse<List<CoinMarketModel>>> GetAssetMarketsAsync(string assetId)
     {
         using (var httpClient = HttpClientFactory.CreateClient())
         {
-            ApiAccessorResponse<IEnumerable<CoinMarketModel>> accessorResponse = new();
+            ApiAccessorResponse<List<CoinMarketModel>> accessorResponse = new();
             try
             {
                 var request = new HttpRequestMessage(HttpMethod.Get,
@@ -165,14 +165,13 @@ public class ApiAccessor : IApiAccessor
                     var markets = await response.Content.ReadFromJsonAsync<CoinMarketsDTO>();
                     if (markets.Data is not null)
                     {
-                        var result = new List<CoinMarketModel>();
+                        accessorResponse.Result = new List<CoinMarketModel>(markets.Data.Count);
                         foreach (var marketDto in markets.Data)
                         {
                             var uri = await GetMarketUriAsync(marketDto.ExchangeId);
-                            var coinMarketModel = marketDto.MapToCoinMarketModel(uri.Result);
-                            result.Add(coinMarketModel);
+                            marketDto.Map(out var coinMarketModel, uri.Result);
+                            accessorResponse.Result.Add(coinMarketModel);
                         }
-                        accessorResponse.Result = result;
                     }
                     else
                     {
@@ -207,7 +206,7 @@ public class ApiAccessor : IApiAccessor
             if (response.IsSuccessStatusCode)
             {
                 var assets = await response.Content.ReadFromJsonAsync<SingleCoinAssetDTO>();
-                accessorResponse.Result = assets.Data.MapToDetailedInfoCurrency();
+                assets.Data.Map(out accessorResponse.Result);
             }
             else
             {

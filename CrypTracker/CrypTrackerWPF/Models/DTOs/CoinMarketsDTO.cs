@@ -11,17 +11,15 @@ public sealed class CoinMarketsDTO
         public string PriceQuote { get; set; }
         public string QuoteSymbol { get; set; }
         
-        CoinMarketModel IMappable<CoinMarketModel>.Map() =>
-            new CoinMarketModel(ExchangeId, PriceQuote, QuoteSymbol);
-        public CoinMarketModel MapToCoinMarketModel(Uri exchnageUri)
+        public void Map(out CoinMarketModel entity) 
+            => entity = new CoinMarketModel(ExchangeId, PriceQuote, QuoteSymbol);
+            
+        public void Map(out CoinMarketModel entity, Uri exchnageUri)
         {
-            var result = (this as IMappable<CoinMarketModel>).Map();
-            result.ExchangeUri = exchnageUri;
-            return result;
+            Map(out entity);
+            entity.ExchangeUri = exchnageUri;
         }
     }
     
     public List<CoinMarketDTO> Data { get; set; }
-    
-    
 }

@@ -32,6 +32,7 @@ public static class Replicas
     public static readonly PropertyPath Volume;
     public static readonly PropertyPath PriceChange;
     public static readonly PropertyPath CurrencyName;
+    public static readonly PropertyPath FieldIsNotPrice;
     static Replicas()
     {
         Greetings = new(nameof(Localization.Greetings));
@@ -62,5 +63,6 @@ public static class Replicas
         Volume = new(nameof(Localization.Volume));
         PriceChange = new(nameof(Localization.PriceChange));
         CurrencyName = new(nameof(Localization.CurrencyName));
+        FieldIsNotPrice = new(nameof(Localization.FieldIsNotPrice));
     }
 }

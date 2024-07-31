@@ -3,28 +3,15 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:local="clr-namespace:CrypTrackerWPF.Screens.CurrencyConverterWindow"
+             xmlns:locale="clr-namespace:CrypTrackerWPF.Models.LocalizationExtensions"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300">
-    <StackPanel Orientation="Vertical">
+    <StackPanel Orientation="Vertical"
+                VerticalAlignment="Center"
+                HorizontalAlignment="Center">
         <StackPanel Orientation="Horizontal">
-            <TextBlock Text="The quantity of " VerticalAlignment="Center"/>
-            <TextBlock Text="{Binding BuyCoinName}" VerticalAlignment="Center"/>
-            <Border Style="{StaticResource TextBoxBorder}"
-                    Margin="10"
-                    HorizontalAlignment="Center">
-                <StackPanel Orientation="Horizontal">
-                    <TextBox
-                        Text="{Binding BuyQuantity, 
-                             Mode=TwoWay, 
-                             UpdateSourceTrigger=PropertyChanged}"
-                        Width="200" />
-                </StackPanel>
-            </Border>
-        </StackPanel>
-        <StackPanel Orientation="Horizontal">
-            <TextBlock Text="The quantity of " VerticalAlignment="Center"/>
-            <TextBlock Text="{Binding SellCoinName}" VerticalAlignment="Center"/>
+            <TextBlock Text="The quantity of " VerticalAlignment="Center" />
+            <TextBlock Text="{Binding SellCoinName}" VerticalAlignment="Center" />
             <Border Style="{StaticResource TextBoxBorder}"
                     Margin="10"
                     HorizontalAlignment="Center">
@@ -37,9 +24,14 @@
                 </StackPanel>
             </Border>
         </StackPanel>
-        <StackPanel Orientation="Horizontal">
-            <TextBlock Text="Result"/>
-            <TextBlock Text="{Binding ConvertResul}"/>
+        <StackPanel Visibility="{Binding IsResultVisible, Converter={StaticResource VisibilityConverter}}"
+                    Orientation="Horizontal">
+            <TextBlock Text="The quantity of " VerticalAlignment="Center" />
+            <TextBlock Text="{Binding BuyCoinName}" VerticalAlignment="Center" />
+            <TextBox Text="{Binding ConvertResul}"/>
         </StackPanel>
+        
+        <TextBox Visibility="{Binding IsErrorVisible, Converter={StaticResource VisibilityConverter}}"
+                 Text="{locale:LocalizationBinding {x:Static locale:Replicas.FieldIsNotPrice}}"/>
     </StackPanel>
 </UserControl>

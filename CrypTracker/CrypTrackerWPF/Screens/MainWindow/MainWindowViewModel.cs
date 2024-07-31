@@ -59,7 +59,7 @@ public sealed class MainWindowViewModel : AffectUiScreen, IHandle<ExchangeDataLo
 
     private async Task LoadAssetsAsync()
     {
-        ApiAccessorResponse<IEnumerable<CoinItemModel>> responce = null!;
+        ApiAccessorResponse<List<CoinItemModel>> responce = null!;
 
         await ExecuteInUiContextAsync(async () =>
         {
@@ -262,7 +262,7 @@ public sealed class MainWindowViewModel : AffectUiScreen, IHandle<ExchangeDataLo
             IsExchangeLoaded = false;
             
             await _eventAggregator.PublishOnUIThreadAsync(
-                new LoadExchangeDataMessage(ExchangeUnit.BuyCurrency.AssetId,
+                new LoadConvertDataMessage(ExchangeUnit.BuyCurrency.AssetId,
                     ExchangeUnit.SellCurrency.AssetId,
                     ExchangeUnit.BuyCurrency.AssetName,
                     ExchangeUnit.SellCurrency.AssetName));
@@ -288,6 +288,6 @@ public sealed class MainWindowViewModel : AffectUiScreen, IHandle<ExchangeDataLo
 
     public async Task OpenExchangeTab()
     {
-        await _eventAggregator.PublishOnUIThreadAsync(new NavigateToExchangeTabMessage());
+        await _eventAggregator.PublishOnUIThreadAsync(new NavigateToConvertTabMessage());
     }
 }

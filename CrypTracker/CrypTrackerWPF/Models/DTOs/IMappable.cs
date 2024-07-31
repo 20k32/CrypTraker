@@ -2,5 +2,5 @@ namespace CrypTrackerWPF.Models.DTOs;
 
 public interface IMappable<TEntity>
 {
-    TEntity Map();
+    void Map(out TEntity entity);
 }
