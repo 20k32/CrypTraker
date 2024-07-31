@@ -76,6 +76,7 @@ public sealed class CurrencyConvertViewModel : Screen, IHandle<LoadConvertDataMe
             _sellQuantity = value;
             NotifyOfPropertyChange();
             ValidateBuyQuantity();
+            
             if (_isSellQuantityCorrect)
             {
                 Convert();
@@ -93,10 +94,7 @@ public sealed class CurrencyConvertViewModel : Screen, IHandle<LoadConvertDataMe
         NotifyOfPropertyChange(nameof(IsResultVisible));
     }
     
-    public override string DisplayName
-    {
-        get => TranslationSource.Instance[Replicas.CurrencyConvertWindowTitle];
-    }
+    public override string DisplayName => TranslationSource.Instance[Replicas.CurrencyConvertWindowTitle];
 
     public CurrencyConvertViewModel(IEventAggregator eventAggregator, IApiAccessor apiAccessor)
     {
@@ -141,8 +139,8 @@ public sealed class CurrencyConvertViewModel : Screen, IHandle<LoadConvertDataMe
         {
             checked
             {
-                decimal totalBuyPrice =  _sellPriceM * _sellQuantityM;
-                decimal converter = totalBuyPrice / _buyPriceM;
+                var totalBuyPrice =  _sellPriceM * _sellQuantityM;
+                var converter = totalBuyPrice / _buyPriceM;
                 ConvertResul = converter.ToString();
             }
         }
@@ -155,10 +153,18 @@ public sealed class CurrencyConvertViewModel : Screen, IHandle<LoadConvertDataMe
 
     protected override Task OnDeactivateAsync(bool close, CancellationToken cancellationToken)
     {
-        _sellQuantity = string.Empty;
-        NotifyOfPropertyChange(nameof(SellQuantity));
-        _isSellQuantityCorrect = false;
-        NotifyOfErrorChange();
+        if (close)
+        {
+            _eventAggregator.Unsubscribe(this);
+        }
+        else
+        {
+            _sellQuantity = string.Empty;
+            NotifyOfPropertyChange(nameof(SellQuantity));
+            _isSellQuantityCorrect = false;
+            NotifyOfErrorChange();
+        }
+        
         return base.OnDeactivateAsync(close, cancellationToken);
     }
 }

@@ -54,8 +54,8 @@ public sealed class Bootstrapper : BootstrapperBase
         await DisplayRootViewForAsync<ShellWindowViewModel>(new Dictionary<string, object>()
         {
             { "WindowStartupLocation", WindowStartupLocation.CenterScreen },
-            { "MinHeight", 800},
-            { "MinWidth", 650},
+            { "MinHeight", 956},
+            { "MinWidth", 970},
         });
     }
 }

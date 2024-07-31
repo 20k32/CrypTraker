@@ -14,17 +14,12 @@ namespace CrypTrackerWPF.Screens.DetailedInfoWindow;
 
 public sealed class DetailedInfoWindowViewModel : AffectUiScreen, IHandle<GetCoinInfoMessage>
 {
-    
-    private readonly IApiAccessor _apiAccessor;
     private readonly IEventAggregator _eventAggregator;
-
+    private readonly IApiAccessor _apiAccessor;
     public ICommand OpenUrlCommand { get; }
     public BindableCollection<CoinMarketModel> Items { get; set; }
     
-    public override string DisplayName
-    {
-        get => TranslationSource.Instance[Replicas.DetailedInfoWindowTitle];
-    }
+    public override string DisplayName => TranslationSource.Instance[Replicas.DetailedInfoWindowTitle];
 
     private DetailedInfoCurrencyModel _currentCoin;
 
@@ -87,5 +82,15 @@ public sealed class DetailedInfoWindowViewModel : AffectUiScreen, IHandle<GetCoi
                 UseShellExecute = true
             });
         }
+    }
+
+    protected override Task OnDeactivateAsync(bool close, CancellationToken cancellationToken)
+    {
+        if (close)
+        {
+            _eventAggregator.Unsubscribe(this);
+        }
+        
+        return base.OnDeactivateAsync(close, cancellationToken);
     }
 }

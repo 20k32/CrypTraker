@@ -21,12 +21,14 @@
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
-        <StackPanel Orientation="Horizontal">
-            <TextBlock Text="{locale:LocalizationBinding {x:Static locale:Replicas.ChooseTheme}}"/>
-            <RadioButton x:Name="DarkTheme"
+        <StackPanel Orientation="Horizontal"
+                    VerticalAlignment="Center">
+            <TextBlock Text="{locale:LocalizationBinding {x:Static locale:Replicas.ChooseTheme}}"
+                       VerticalAlignment="Center"/>
+            <Button x:Name="DarkTheme"
                          Content="{locale:LocalizationBinding {x:Static locale:Replicas.DarkTheme}}"
                          Margin="20, 0, 10, 0"/>
-            <RadioButton x:Name="LightTheme"
+            <Button x:Name="LightTheme"
                          Content="{locale:LocalizationBinding {x:Static locale:Replicas.LightTheme}}"/>
         </StackPanel>
         <TextBlock Text="{locale:LocalizationBinding {x:Static locale:Replicas.DescriptionToPrice}}"

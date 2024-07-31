@@ -1,5 +1,7 @@
 using System;
+using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 using Caliburn.Micro;
 
 namespace CrypTrackerWPF.Screens;
@@ -35,5 +37,10 @@ public class AffectUiScreen : Screen
     public AffectUiScreen()
     {
         IsUiEnabled = true;
+    }
+    
+    public override Task<bool> CanCloseAsync(CancellationToken token)
+    {
+        return Task.FromResult(IsUiEnabled);
     }
 }

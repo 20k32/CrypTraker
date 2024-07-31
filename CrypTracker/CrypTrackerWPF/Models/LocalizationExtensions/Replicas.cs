@@ -33,6 +33,16 @@ public static class Replicas
     public static readonly PropertyPath PriceChange;
     public static readonly PropertyPath CurrencyName;
     public static readonly PropertyPath FieldIsNotPrice;
+    public static readonly PropertyPath Quantity;
+    public static readonly PropertyPath TheDataIsLoading;
+    public static readonly PropertyPath ConvertButtonName;
+    public static readonly PropertyPath ConvertCurrencyMessage;
+    public static readonly PropertyPath BuyMessage;
+    public static readonly PropertyPath SellMessage;
+    public static readonly PropertyPath MainGridTooltip;
+    public static readonly PropertyPath AddToConverterMenu;
+    public static readonly PropertyPath RemoveFromConverterMenu;
+    
     static Replicas()
     {
         Greetings = new(nameof(Localization.Greetings));
@@ -64,5 +74,14 @@ public static class Replicas
         PriceChange = new(nameof(Localization.PriceChange));
         CurrencyName = new(nameof(Localization.CurrencyName));
         FieldIsNotPrice = new(nameof(Localization.FieldIsNotPrice));
+        Quantity = new(nameof(Localization.Quantity));
+        TheDataIsLoading = new(nameof(Localization.TheDataIsLoading));
+        ConvertButtonName = new(nameof(Localization.ConvertButtonName));
+        ConvertCurrencyMessage = new(nameof(Localization.ConvertCurrencyMessage));
+        BuyMessage = new(nameof(Localization.BuyMesasge));
+        SellMessage = new(nameof(Localization.SellMessage));
+        MainGridTooltip = new(nameof(Localization.MainGridTooltip));
+        AddToConverterMenu = new(nameof(Localization.AddToConverterMenu));
+        RemoveFromConverterMenu = new(nameof(Localization.RemoveFromConverterMenu));
     }
 }

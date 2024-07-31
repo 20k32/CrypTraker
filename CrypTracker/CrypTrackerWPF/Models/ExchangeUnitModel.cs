@@ -60,8 +60,7 @@ public sealed class ExchangeUnitModel
     
     public void AddValueAndNotify(string id, string name)
     {
-        if (string.IsNullOrEmpty(SellCurrency.AssetId)
-                 && !BuyCurrency.Equals(id))
+        if (string.IsNullOrEmpty(SellCurrency.AssetId))
         {
             SellCurrency.AssetId = id;
             SellCurrency.AssetName = name;
@@ -79,11 +78,11 @@ public sealed class ExchangeUnitModel
         {
             SellCurrency.Clear();
         }
-        if (BuyCurrency.Equals(id))
+        else if (BuyCurrency.Equals(id))
         {
             BuyCurrency.Clear();
         }
-        if (SellCurrency.IsFilled)
+        else if (SellCurrency.IsFilled)
         {
             SellCurrency.Clear();
         }

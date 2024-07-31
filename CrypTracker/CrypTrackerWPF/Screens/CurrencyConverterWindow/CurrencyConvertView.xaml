@@ -10,8 +10,11 @@
                 VerticalAlignment="Center"
                 HorizontalAlignment="Center">
         <StackPanel Orientation="Horizontal">
-            <TextBlock Text="The quantity of " VerticalAlignment="Center" />
-            <TextBlock Text="{Binding SellCoinName}" VerticalAlignment="Center" />
+            <TextBlock Text="{locale:LocalizationBinding {x:Static locale:Replicas.Quantity}}" 
+                       VerticalAlignment="Center" />
+            <TextBlock Text="{Binding SellCoinName}"
+                       VerticalAlignment="Center"
+                       Margin="5, 0"/>
             <Border Style="{StaticResource TextBoxBorder}"
                     Margin="10"
                     HorizontalAlignment="Center">
@@ -26,9 +29,13 @@
         </StackPanel>
         <StackPanel Visibility="{Binding IsResultVisible, Converter={StaticResource VisibilityConverter}}"
                     Orientation="Horizontal">
-            <TextBlock Text="The quantity of " VerticalAlignment="Center" />
-            <TextBlock Text="{Binding BuyCoinName}" VerticalAlignment="Center" />
-            <TextBox Text="{Binding ConvertResul}"/>
+            <TextBlock Text="{locale:LocalizationBinding {x:Static locale:Replicas.Quantity}}" 
+                       VerticalAlignment="Center" />
+            <TextBlock Text="{Binding BuyCoinName}" 
+                       VerticalAlignment="Center"
+                       Margin="5, 0"/>
+            <TextBox Text="{Binding ConvertResul}"
+                     IsReadOnly="True"/>
         </StackPanel>
         
         <TextBox Visibility="{Binding IsErrorVisible, Converter={StaticResource VisibilityConverter}}"

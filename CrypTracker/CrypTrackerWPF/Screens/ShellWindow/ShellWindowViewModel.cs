@@ -1,15 +1,11 @@
-using System;
-using System.Diagnostics;
 using System.Globalization;
-using System.Linq;
-using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 using Caliburn.Micro;
 using CrypTrackerWPF.Models.ApiAccessor;
 using CrypTrackerWPF.Models.EventMessages;
 using CrypTrackerWPF.Models.LocalizationExtensions;
-using CrypTrackerWPF.Resources;
 using CrypTrackerWPF.Screens.CurrencyConverterWindow;
 using CrypTrackerWPF.Screens.DetailedInfoWindow;
 using CrypTrackerWPF.Screens.MainWindow;
@@ -44,10 +40,7 @@ public sealed class ShellWindowViewModel : Conductor<Screen>.Collection.OneActiv
         _apiAccessor = apiAccessor;
     }
     
-    public string WindowTitle
-    {
-        get => TranslationSource.Instance[Replicas.Greetings];
-    }
+    public string WindowTitle => TranslationSource.Instance[Replicas.Greetings];
     
     protected override Task OnInitializeAsync(CancellationToken cancellationToken)
     {
@@ -80,5 +73,21 @@ public sealed class ShellWindowViewModel : Conductor<Screen>.Collection.OneActiv
     public async Task HandleAsync(NavigateToConvertTabMessage message, CancellationToken cancellationToken)
     {
         await ActivateItemAsync(_convertWindow);
+    }
+
+    public override async Task<bool> CanCloseAsync(CancellationToken cancellationToken = new())
+    {
+        bool result = true;
+        foreach (var screen in Items)
+        {
+            result &= await screen.CanCloseAsync();
+        }
+
+        if (!result)
+        {
+            MessageBox.Show(TranslationSource.Instance[Replicas.TheDataIsLoading]);
+        }
+        
+        return result;
     }
 }

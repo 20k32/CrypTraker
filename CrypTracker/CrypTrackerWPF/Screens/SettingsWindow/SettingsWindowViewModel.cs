@@ -19,7 +19,14 @@ public sealed class SettingsWindowViewModel : AffectUiScreen
 
     private static readonly ResourceDictionary _lightTheme = new ResourceDictionary()
         { Source = new Uri("Resources/Themes/Light.xaml", UriKind.Relative) };
-
+    
+    private readonly IEventAggregator _eventAggregator;
+    public SettingsWindowViewModel(IEventAggregator eventAggregator)
+    {
+        Localizations = new();
+        _eventAggregator = eventAggregator;
+    }
+    
     #region LocalizationListBox
 
     public BindableCollection<LocalizationItemModel> Localizations { get; init; }
@@ -38,7 +45,7 @@ public sealed class SettingsWindowViewModel : AffectUiScreen
     }
 
     #endregion
-
+    
     private async Task ChangeLocalization()
     {
         if (TranslationSource.Instance.CurrentCulture != SelectedLocalization.Culture)
@@ -55,17 +62,7 @@ public sealed class SettingsWindowViewModel : AffectUiScreen
         }
     }
     
-    public override string DisplayName
-    {
-        get => TranslationSource.Instance[Replicas.SettingsWindowTitle];
-    }
-    
-    private readonly IEventAggregator _eventAggregator;
-    public SettingsWindowViewModel(IEventAggregator eventAggregator)
-    {
-        Localizations = new();
-        _eventAggregator = eventAggregator;
-    }
+    public override string DisplayName => TranslationSource.Instance[Replicas.SettingsWindowTitle];
 
     protected override Task OnInitializeAsync(CancellationToken cancellationToken)
     {
@@ -95,7 +92,7 @@ public sealed class SettingsWindowViewModel : AffectUiScreen
     public void DarkTheme()
     {
         App.Current.Resources.MergedDictionaries.Remove(_lightTheme);
-        ExecuteInUiContext(() => App.Current.Resources.MergedDictionaries.Add(_darkTheme));
+        App.Current.Resources.MergedDictionaries.Add(_darkTheme);
         CanLightTheme = true;
         CanDarkTheme = false;
     }
@@ -118,7 +115,7 @@ public sealed class SettingsWindowViewModel : AffectUiScreen
     public void LightTheme()
     {
         App.Current.Resources.MergedDictionaries.Remove(_darkTheme);
-        ExecuteInUiContext(() => App.Current.Resources.MergedDictionaries.Add(_lightTheme));
+        App.Current.Resources.MergedDictionaries.Add(_lightTheme);
         CanLightTheme = false;
         CanDarkTheme = true;
     }
