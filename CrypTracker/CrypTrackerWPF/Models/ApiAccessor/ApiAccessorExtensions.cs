@@ -19,24 +19,14 @@ public static class ApiAccessorExtensions
         }
         else if (response.Message is null)
         {
-            ifValidCallback(response.Result);
-        }
-        else
-        {
-            MessageBox.Show(response.Message);
-        }
-    }
-    
-    public static async Task ValidateResponseAsync<TResult>(ApiAccessorResponse<TResult> response,
-        System.Func<TResult, Task> ifValidCallbackAsync)
-    {
-        if (response is null)
-        {
-            MessageBox.Show(TranslationSource.Instance[Replicas.EmptyValueError]);
-        }
-        else if (response.Message is null)
-        {
-            await ifValidCallbackAsync(response.Result);
+            if (!response.IsNull())
+            {
+                ifValidCallback(response.Result);
+            }
+            else
+            {
+                MessageBox.Show(TranslationSource.Instance[Replicas.ClientSideError]);
+            }
         }
         else
         {

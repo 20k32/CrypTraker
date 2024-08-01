@@ -2,7 +2,9 @@ using CrypTrackerWPF.Models.ListBoxItemModels;
 
 namespace CrypTrackerWPF.Models.DTOs;
 
-public sealed class CoinAssetDTO : IMappable<CoinItemModel>, IMappable<DetailedInfoCurrencyModel>
+public sealed class CoinAssetDTO : IMappable<CoinItemModel>, 
+    IMappable<DetailedInfoCurrencyModel>,
+    INullCheck
 {
     public string Id { get; set; }
     public int Rank { get; set; }
@@ -24,5 +26,15 @@ public sealed class CoinAssetDTO : IMappable<CoinItemModel>, IMappable<DetailedI
     public void Map(out DetailedInfoCurrencyModel entity)
     {
         entity = new(Id, Name, Symbol, PriceUsd, Supply, ChangePercent24Hr);
+    }
+
+    public bool IsNull()
+    {
+        return string.IsNullOrWhiteSpace(Id)
+               || string.IsNullOrWhiteSpace(Symbol)
+               || string.IsNullOrWhiteSpace(Name)
+               || string.IsNullOrWhiteSpace(Supply)
+               || string.IsNullOrWhiteSpace(PriceUsd)
+               || string.IsNullOrWhiteSpace(ChangePercent24Hr);
     }
 }

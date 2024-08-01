@@ -5,13 +5,13 @@ namespace CrypTrackerWPF.Models;
 
 public class RelayCommand : ICommand
 {
-    private Action<object> execute = null;
-    private Predicate<object> canExecute = null;
+    private Action<object> _execute = null;
+    private Predicate<object> _canExecute = null;
 
     public RelayCommand(Action<object> Execute, Predicate<object> CanExecute = null)
     {
-        execute = Execute;
-        canExecute = CanExecute;
+        _execute = Execute;
+        _canExecute = CanExecute;
     }
 
     public event EventHandler CanExecuteChanged
@@ -22,11 +22,11 @@ public class RelayCommand : ICommand
 
     public bool CanExecute(object parameter)
     {
-        return canExecute == null || canExecute.Invoke(parameter = null!);
+        return _canExecute == null || _canExecute.Invoke(parameter = null!);
     }
 
     public void Execute(object parameter)
     {
-        execute?.Invoke(parameter);
+        _execute?.Invoke(parameter);
     }
 }

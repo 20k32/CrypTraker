@@ -111,10 +111,10 @@ public sealed class CurrencyConvertViewModel : Screen, IHandle<LoadConvertDataMe
         var sellCoinResult = await _apiAccessor.GetAssetByIdAsync(message.SellCurrencyId);
   
         ApiAccessorExtensions.ValidateResponse(buyCoinResult,
-            (result) => _buyPriceM = decimal.Parse(buyCoinResult.Result.Price));
+            (result) => _buyPriceM = decimal.Parse(result.Price));
 
         ApiAccessorExtensions.ValidateResponse(sellCoinResult,
-            (result) => _sellPriceM = decimal.Parse(sellCoinResult.Result.Price));
+            (result) => _sellPriceM = decimal.Parse(result.Price));
         
         await _eventAggregator.PublishOnUIThreadAsync(new ExchangeDataLoadedMessage());
     }

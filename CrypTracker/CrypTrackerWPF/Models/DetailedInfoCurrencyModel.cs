@@ -6,7 +6,8 @@ using CrypTrackerWPF.Models.DTOs;
 
 namespace CrypTrackerWPF.Models;
 
-public sealed class DetailedInfoCurrencyModel : INotifyPropertyChanged
+public sealed class DetailedInfoCurrencyModel : INotifyPropertyChanged,
+    INullCheck
 {
     public string Id { get; set; }
 
@@ -82,5 +83,14 @@ public DetailedInfoCurrencyModel()
     private void OnPropertyChanged([CallerMemberName] string propertyName = null)
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    }
+
+    public bool IsNull()
+    {
+        return string.IsNullOrWhiteSpace(Id)
+               || string.IsNullOrWhiteSpace(Name)
+               || string.IsNullOrWhiteSpace(ShortName)
+               || string.IsNullOrWhiteSpace(Price)
+               || string.IsNullOrWhiteSpace(PriceChange);
     }
 }
