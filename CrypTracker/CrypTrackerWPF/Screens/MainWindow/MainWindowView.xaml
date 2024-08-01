@@ -47,7 +47,8 @@
                       Height="531"
                       EnableColumnVirtualization="True"
                       EnableRowVirtualization="True"
-                      cal:Message.Attach="[Event MouseDown] = [Action SendDetailedInfoMessageByMouseButton($eventArgs)]">
+                      cal:Message.Attach="[Event MouseDown] = [Action SendDetailedInfoMessageByMouseButton($eventArgs)]"
+                      VerticalScrollBarVisibility="Auto">
                 <DataGrid.Resources>
                     <ContextMenu x:Key="CellMenu">
                         <MenuItem Header="{locale:LocalizationBinding {x:Static locale:Replicas.AddToConverterMenu}}"

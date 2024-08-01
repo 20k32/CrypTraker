@@ -195,18 +195,18 @@ public sealed class MainWindowViewModel : AffectUiScreen, IHandle<ExchangeDataLo
     
     public async Task PerformSearchAsync(string searchOptions)
     {
-        ApiAccessorResponse<CoinItemModel> responce = null!;
+        ApiAccessorResponse<List<CoinItemModel>> responce = null!;
         
         await ExecuteInUiContextAsync(async () =>
         {
-            responce = await _apiAccessor.GetAssetByIdAsync(searchOptions);
+            responce = await _apiAccessor.GetAssetsByIdOrAliasAsync(searchOptions);
         });
         
         Items.Clear();
         
         if (responce.Result is not null)
         {
-            Items.Add(responce.Result);
+            Items.AddRange(responce.Result);
         }
     }
     

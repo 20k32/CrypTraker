@@ -1,4 +1,4 @@
 namespace CrypTrackerWPF.Models.EventMessages;
 
-public class ExchangeDataLoadedMessage
+public sealed class ExchangeDataLoadedMessage
 { }

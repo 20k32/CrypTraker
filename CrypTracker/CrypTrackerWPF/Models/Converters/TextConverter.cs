@@ -4,7 +4,7 @@ using System.Windows.Data;
 
 namespace CrypTrackerWPF.Models.Converters;
 
-public class TextConverter : IValueConverter
+public sealed class TextConverter : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {

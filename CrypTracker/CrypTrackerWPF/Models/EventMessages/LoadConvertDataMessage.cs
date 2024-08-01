@@ -1,6 +1,6 @@
 namespace CrypTrackerWPF.Models.EventMessages;
 
-public class LoadConvertDataMessage
+public sealed class LoadConvertDataMessage
 {
     public string BuyCurrencyId { get; init; }
     public string BuyCurrencyName { get; init; }

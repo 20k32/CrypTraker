@@ -1,4 +1,4 @@
 namespace CrypTrackerWPF.Models.EventMessages;
 
-public class NavigateToConvertTabMessage
+public sealed class NavigateToConvertTabMessage
 { }

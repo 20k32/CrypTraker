@@ -1,6 +1,6 @@
 namespace CrypTrackerWPF.Models.EventMessages;
 
-public class GetCoinInfoMessage
+public sealed class GetCoinInfoMessage
 {
     public GetCoinInfoMessage(string id)
     {

@@ -15,7 +15,7 @@ using CrypTrackerWPF.Models.LocalizationExtensions;
 
 namespace CrypTrackerWPF.Models.ApiAccessor;
 
-public class ApiAccessor : IApiAccessor
+public sealed class ApiAccessor : IApiAccessor
 {
     private HttpClient _httpClient;
     private ushort _intervalLength;
@@ -86,6 +86,36 @@ public class ApiAccessor : IApiAccessor
     }
 
     
+    public async Task<ApiAccessorResponse<List<CoinItemModel>>> GetAssetsByIdOrAliasAsync(string id)
+    {
+        ApiAccessorResponse<List<CoinItemModel>> accessorResponse = new();
+        try
+        {
+            var request = new HttpRequestMessage(HttpMethod.Get,
+                $"{ApiConstants.ASSETS_ROUTE}?{ApiConstants.ASSETS_SEARCH_PARAM}={id}" +
+                $"&{ApiConstants.ASSETS_LIMIT_PARAM}={ApiConstants.SEARCH_LIMIT}");
+
+            var response = await _httpClient.SendAsync(request);
+
+            if (response.IsSuccessStatusCode)
+            {
+                var assets = await response.Content.ReadFromJsonAsync<CoinAssetsDTO>();
+                assets.Map(out accessorResponse.Result);
+            }
+            else
+            {
+                accessorResponse.Message =
+                    $"{TranslationSource.Instance[Replicas.ServerSideError]} {response.StatusCode}";
+            }
+        }
+        catch (Exception _)
+        {
+            accessorResponse.Message = TranslationSource.Instance[Replicas.ClientSideError];
+        }
+        
+        return accessorResponse;
+    }
+    
     public async Task<ApiAccessorResponse<CoinItemModel>> GetAssetByIdAsync(string id)
     {
         ApiAccessorResponse<CoinItemModel> accessorResponse = new();
@@ -98,8 +128,8 @@ public class ApiAccessor : IApiAccessor
 
             if (response.IsSuccessStatusCode)
             {
-                var assets = await response.Content.ReadFromJsonAsync<SingleCoinAssetDTO>();
-                assets.Data.Map(out accessorResponse.Result);
+                var asset = await response.Content.ReadFromJsonAsync<SingleCoinAssetDTO>();
+                asset.Data.Map(out accessorResponse.Result);
             }
             else
             {
@@ -205,8 +235,8 @@ public class ApiAccessor : IApiAccessor
 
             if (response.IsSuccessStatusCode)
             {
-                var assets = await response.Content.ReadFromJsonAsync<SingleCoinAssetDTO>();
-                assets.Data.Map(out accessorResponse.Result);
+                var asset = await response.Content.ReadFromJsonAsync<SingleCoinAssetDTO>();
+                asset.Data.Map(out accessorResponse.Result);
             }
             else
             {

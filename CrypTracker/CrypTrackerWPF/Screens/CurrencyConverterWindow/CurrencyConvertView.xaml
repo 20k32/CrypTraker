@@ -38,7 +38,7 @@
                      IsReadOnly="True"/>
         </StackPanel>
         
-        <TextBox Visibility="{Binding IsErrorVisible, Converter={StaticResource VisibilityConverter}}"
+        <TextBlock Visibility="{Binding IsErrorVisible, Converter={StaticResource VisibilityConverter}}"
                  Text="{locale:LocalizationBinding {x:Static locale:Replicas.FieldIsNotPrice}}"/>
     </StackPanel>
 </UserControl>
