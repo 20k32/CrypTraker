@@ -1,0 +1,10 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <!--<SolidColorBrush Color="#dfe6e9" x:Key="BackgroundWindow"/>-->
+    <SolidColorBrush Color="#D8D5D9" x:Key="BackgroundWindow"/>
+    <SolidColorBrush Color="#ffffff" x:Key="BackgroundTab"/>
+    <SolidColorBrush Color="#DFE9FF" x:Key="SelectedTab"/>
+    <SolidColorBrush Color="#dcdaf5" x:Key="AdditionalControl"/>
+    <SolidColorBrush Color="#1c1b1d" x:Key="Foreground"/>
+    <SolidColorBrush Color="LightGray" x:Key="DisabledControl"/>
+</ResourceDictionary>

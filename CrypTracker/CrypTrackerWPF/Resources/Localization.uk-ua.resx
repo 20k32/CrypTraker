@@ -1,0 +1,125 @@
+<root>
+    <resheader name="resmimetype">
+        <value>text/microsoft-resx</value>
+    </resheader>
+    <resheader name="version">
+        <value>1.3</value>
+    </resheader>
+    <resheader name="reader">
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <resheader name="writer">
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <data name="Greetings" xml:space="preserve">
+        <value>CrypTracker - тестовий проект для DCT</value>
+    </data>
+    <data name="CurrencySign" xml:space="preserve">
+        <value>$</value>
+    </data>
+    <data name="DetailedInfoWindowTitle" xml:space="preserve">
+        <value>Детальніше</value>
+    </data>
+    <data name="MainWindowTitle" xml:space="preserve">
+        <value>Топ валют</value>
+    </data>
+    <data name="SettingsWindowTitle" xml:space="preserve">
+        <value>Налаштування</value>
+    </data>
+    <data name="CurrencyConvertWindowTitle" xml:space="preserve">
+        <value>Ковертер валют</value>
+    </data>
+    <data name="SubmitButtonName" xml:space="preserve">
+        <value>Ввести</value>
+    </data>
+    <data name="EngCultureDescription" xml:space="preserve">
+        <value>Англійська</value>
+    </data>
+    <data name="UkrCultureDescription" xml:space="preserve">
+        <value>Українська</value>
+    </data>
+    <data name="LightTheme" xml:space="preserve">
+        <value>Світла</value>
+    </data>
+    <data name="DarkTheme" xml:space="preserve">
+        <value>Темна</value>
+    </data>
+    <data name="ChooseTheme" xml:space="preserve">
+        <value>Оберіть тему:</value>
+    </data>
+    <data name="ChooseLang" xml:space="preserve">
+        <value>Оберіть мову:</value>
+    </data>
+    <data name="ClientSideError" xml:space="preserve">
+        <value>При обробці запиту з сервера сталася помилка.</value>
+    </data>
+    <data name="EmptyValueError" xml:space="preserve">
+        <value>Жодних даних не завантажено, спробуйте знову.</value>
+    </data>
+    <data name="ServerSideError" xml:space="preserve">
+        <value>На сервері сталася помилка, статус-код:</value>
+    </data>
+    <data name="Name" xml:space="preserve">
+        <value>Назва</value>
+    </data>
+    <data name="Price" xml:space="preserve">
+        <value>Ціна</value>
+    </data>
+    <data name="ShortName" xml:space="preserve">
+        <value>Псевдонім</value>
+    </data>
+    <data name="DescriptionToPrice" xml:space="preserve">
+        <value>Заголовок «Ціна» в таблицях відображає ціну в доларах, навіть якщо Ви змінили локалізацію.</value>
+    </data>
+    <data name="DisplayTop" xml:space="preserve">
+        <value>Топ</value>
+    </data>
+    <data name="NextPage" xml:space="preserve">
+        <value>Наступна сторінка</value>
+    </data>
+    <data name="PreviousPage" xml:space="preserve">
+        <value>Попередня сторінка</value>
+    </data>
+    <data name="ResetButtonName" xml:space="preserve">
+        <value>Скинути</value>
+    </data>
+    <data name="Volume" xml:space="preserve">
+        <value>Об'єм</value>
+    </data>
+    <data name="PriceChange" xml:space="preserve">
+        <value>Зміна ціни за добу</value>
+    </data>
+    <data name="CurrencyName" xml:space="preserve">
+        <value>Валюта</value>
+    </data>
+    <data name="FieldIsNotPrice" xml:space="preserve">
+        <value>Це не кількість!</value>
+    </data>
+    <data name="TheDataIsLoading" xml:space="preserve">
+        <value>Дані ще завантажуються. Будь ласка, спробуйте знову.</value>
+    </data>
+    <data name="Quantity" xml:space="preserve">
+        <value>Кількість</value>
+    </data>
+    <data name="ConvertButtonName" xml:space="preserve">
+        <value>Конвертер готовий, натисніть сюди або перейдіть на вклакду</value>
+    </data>
+    <data name="ConvertCurrencyMessage" xml:space="preserve">
+        <value>Ви збираєтеся конвертувати валюту.</value>
+    </data>
+    <data name="BuyMesasge" xml:space="preserve">
+        <value>Купити:</value>
+    </data>
+    <data name="SellMessage" xml:space="preserve">
+        <value>Продати:</value>
+    </data>
+    <data name="MainGridTooltip" xml:space="preserve">
+        <value>Натисніть 1 раз щоб обрати. Двічі, щоб завантажити деталі. правою кнопку миші, щоб додати в меню конвертера.</value>
+    </data>
+    <data name="RemoveFromConverterMenu" xml:space="preserve">
+        <value>Видалити</value>
+    </data>
+    <data name="AddToConverterMenu" xml:space="preserve">
+        <value>Додати</value>
+    </data>
+</root>
